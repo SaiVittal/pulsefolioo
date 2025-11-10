@@ -1,0 +1,89 @@
+{
+  "version": 3,
+  "targets": {
+    "net8.0": {
+      "Pulsefolio.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/Pulsefolio.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Pulsefolio.Domain.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Pulsefolio.Domain/1.0.0": {
+      "type": "project",
+      "path": "../Pulsefolio.Domain/Pulsefolio.Domain.csproj",
+      "msbuildProject": "../Pulsefolio.Domain/Pulsefolio.Domain.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net8.0": [
+      "Pulsefolio.Domain >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "/home/sai-vittal-sirimamidi/.nuget/packages/": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/Pulsefolio.Application.csproj",
+      "projectName": "Pulsefolio.Application",
+      "projectPath": "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/Pulsefolio.Application.csproj",
+      "packagesPath": "/home/sai-vittal-sirimamidi/.nuget/packages/",
+      "outputPath": "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/obj/",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "/home/sai-vittal-sirimamidi/.nuget/NuGet/NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "net8.0"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "projectReferences": {
+            "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Domain/Pulsefolio.Domain.csproj": {
+              "projectPath": "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Domain/Pulsefolio.Domain.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net8.0": {
+        "targetAlias": "net8.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.121/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

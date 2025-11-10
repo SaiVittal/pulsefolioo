@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "Pulsefolio.Application/1.0.0": {
+        "dependencies": {
+          "Pulsefolio.Domain": "1.0.0"
+        },
+        "runtime": {
+          "Pulsefolio.Application.dll": {}
+        }
+      },
+      "Pulsefolio.Domain/1.0.0": {
+        "runtime": {
+          "Pulsefolio.Domain.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Pulsefolio.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Pulsefolio.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

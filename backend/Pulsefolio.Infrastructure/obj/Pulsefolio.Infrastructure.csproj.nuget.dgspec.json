@@ -1,0 +1,140 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Infrastructure/Pulsefolio.Infrastructure.csproj": {}
+  },
+  "projects": {
+    "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Domain/Pulsefolio.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Domain/Pulsefolio.Domain.csproj",
+        "projectName": "Pulsefolio.Domain",
+        "projectPath": "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Domain/Pulsefolio.Domain.csproj",
+        "packagesPath": "/home/sai-vittal-sirimamidi/.nuget/packages/",
+        "outputPath": "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Domain/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/sai-vittal-sirimamidi/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.121/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Infrastructure/Pulsefolio.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Infrastructure/Pulsefolio.Infrastructure.csproj",
+        "projectName": "Pulsefolio.Infrastructure",
+        "projectPath": "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Infrastructure/Pulsefolio.Infrastructure.csproj",
+        "packagesPath": "/home/sai-vittal-sirimamidi/.nuget/packages/",
+        "outputPath": "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Infrastructure/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/sai-vittal-sirimamidi/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Domain/Pulsefolio.Domain.csproj": {
+                "projectPath": "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Domain/Pulsefolio.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[9.0.10, )"
+            },
+            "Microsoft.Extensions.Logging": {
+              "target": "Package",
+              "version": "[9.0.10, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "RabbitMQ.Client": {
+              "target": "Package",
+              "version": "[7.2.0, )"
+            },
+            "StackExchange.Redis": {
+              "target": "Package",
+              "version": "[2.9.32, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.121/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

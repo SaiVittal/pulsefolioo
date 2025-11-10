@@ -1,0 +1,15 @@
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/bin/Debug/net8.0/Pulsefolio.Application.deps.json
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/bin/Debug/net8.0/Pulsefolio.Application.dll
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/bin/Debug/net8.0/Pulsefolio.Application.pdb
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/bin/Debug/net8.0/Pulsefolio.Domain.dll
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/bin/Debug/net8.0/Pulsefolio.Domain.pdb
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/obj/Debug/net8.0/Pulsefolio.Application.csproj.AssemblyReference.cache
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/obj/Debug/net8.0/Pulsefolio.Application.GeneratedMSBuildEditorConfig.editorconfig
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/obj/Debug/net8.0/Pulsefolio.Application.AssemblyInfoInputs.cache
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/obj/Debug/net8.0/Pulsefolio.Application.AssemblyInfo.cs
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/obj/Debug/net8.0/Pulsefolio.Application.csproj.CoreCompileInputs.cache
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/obj/Debug/net8.0/Pulsefolio.Application.csproj.CopyComplete
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/obj/Debug/net8.0/Pulsefolio.Application.dll
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/obj/Debug/net8.0/refint/Pulsefolio.Application.dll
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/obj/Debug/net8.0/Pulsefolio.Application.pdb
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/obj/Debug/net8.0/ref/Pulsefolio.Application.dll
