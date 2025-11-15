@@ -13,3 +13,4 @@
 /home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/obj/Debug/net8.0/refint/Pulsefolio.Application.dll
 /home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/obj/Debug/net8.0/Pulsefolio.Application.pdb
 /home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/obj/Debug/net8.0/ref/Pulsefolio.Application.dll
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/obj/Debug/net8.0/Pulsefolio.Application.sourcelink.json

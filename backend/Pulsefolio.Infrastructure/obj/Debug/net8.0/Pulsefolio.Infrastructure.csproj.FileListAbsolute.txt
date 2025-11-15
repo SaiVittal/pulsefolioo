@@ -13,3 +13,6 @@
 /home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Infrastructure/obj/Debug/net8.0/refint/Pulsefolio.Infrastructure.dll
 /home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Infrastructure/obj/Debug/net8.0/Pulsefolio.Infrastructure.pdb
 /home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Infrastructure/obj/Debug/net8.0/ref/Pulsefolio.Infrastructure.dll
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Infrastructure/bin/Debug/net8.0/Pulsefolio.Infrastructure.runtimeconfig.json
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Infrastructure/obj/Debug/net8.0/Pulsefolio.Infrastructure.sourcelink.json
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Infrastructure/obj/Debug/net8.0/Pulsefolio.Infrastructure.genruntimeconfig.cache

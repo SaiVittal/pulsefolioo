@@ -9,3 +9,4 @@
 /home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Domain/obj/Debug/net8.0/refint/Pulsefolio.Domain.dll
 /home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Domain/obj/Debug/net8.0/Pulsefolio.Domain.pdb
 /home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Domain/obj/Debug/net8.0/ref/Pulsefolio.Domain.dll
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Domain/obj/Debug/net8.0/Pulsefolio.Domain.sourcelink.json

@@ -53,6 +53,11 @@
               "target": "Package",
               "version": "[8.0.21, )"
             },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.1, )"
+            },
             "Serilog.AspNetCore": {
               "target": "Package",
               "version": "[9.0.0, )"
@@ -217,6 +222,9 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
+              "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/Pulsefolio.Application.csproj": {
+                "projectPath": "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/Pulsefolio.Application.csproj"
+              },
               "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Domain/Pulsefolio.Domain.csproj": {
                 "projectPath": "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Domain/Pulsefolio.Domain.csproj"
               }
@@ -233,6 +241,22 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.1, )"
+            },
             "Microsoft.Extensions.Configuration": {
               "target": "Package",
               "version": "[9.0.10, )"
