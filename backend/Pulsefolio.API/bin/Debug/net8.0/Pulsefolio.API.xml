@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Pulsefolio.API</name>
+    </assembly>
+    <members>
+        <member name="T:AuthController">
+            <summary>
+            Controller for handling user authentication operations including registration, login, and token refresh.
+            </summary>
+        </member>
+        <member name="M:AuthController.#ctor(Pulsefolio.Application.Interfaces.Services.IAuthService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AuthController"/> class.
+            </summary>
+            <param name="auth">The authentication service.</param>
+        </member>
+        <member name="M:AuthController.Register(Pulsefolio.Application.DTOs.Auth.RegisterUserDto)">
+            <summary>
+            Registers a new user and returns JWT access + refresh tokens.
+            </summary>
+            <param name="dto">User's email and password.</param>
+            <returns>Access token, refresh token, and user ID.</returns>
+        </member>
+        <member name="M:AuthController.Login(Pulsefolio.Application.DTOs.Auth.LoginUserDto)">
+            <summary>
+            Logs in a user and issues new access + refresh tokens.
+            </summary>
+            <param name="dto">Email and password.</param>
+        </member>
+        <member name="M:AuthController.Refresh(System.String)">
+            <summary>
+            Creates a new access token using a valid refresh token.
+            </summary>
+            <param name="refreshToken">The refresh token string.</param>
+        </member>
+        <member name="T:Pulsefolio.API.Controllers.TestController">
+            <summary>
+            Controller for testing authenticated endpoints.
+            </summary>
+        </member>
+        <member name="M:Pulsefolio.API.Controllers.TestController.SecureEndpoint">
+            <summary>
+            Retrieves a secure endpoint that requires authentication.
+            </summary>
+            <returns>An OK response with an authenticated user message.</returns>
+        </member>
+    </members>
+</doc>

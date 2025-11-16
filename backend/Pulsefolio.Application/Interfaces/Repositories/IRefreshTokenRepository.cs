@@ -7,5 +7,9 @@ namespace Pulsefolio.Application.Interfaces.Repositories
         Task AddAsync(RefreshToken token);
         Task<RefreshToken?> GetValidTokenAsync(Guid userId, string token);
         Task InvalidateTokensAsync(Guid userId);
+        Task<RefreshToken?> GetByTokenAsync(string token);
+
+        Task UpdateAsync(RefreshToken token);
+
     }
 }

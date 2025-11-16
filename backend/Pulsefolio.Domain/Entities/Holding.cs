@@ -5,7 +5,7 @@ namespace Pulsefolio.Domain.Entities
     public class Holding : BaseEntity
     {
         public Guid PortfolioId { get; set; }
-        public required Portfolio Portfolio { get; set; }
+        public Portfolio? Portfolio { get; set; }
 
         public string Symbol { get; set; } = string.Empty; // e.g., AAPL
         public decimal Quantity { get; set; }

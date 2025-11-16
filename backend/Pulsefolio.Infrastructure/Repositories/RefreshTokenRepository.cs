@@ -40,5 +40,15 @@ namespace Pulsefolio.Infrastructure.Repositories
 
             await _db.SaveChangesAsync();
         }
+
+        public async Task<RefreshToken?> GetByTokenAsync(string token)
+        {
+            return await _db.RefreshTokens.FirstOrDefaultAsync(r => r.Token == token);
+        }
+        public async Task UpdateAsync(RefreshToken token)
+        {
+            _db.RefreshTokens.Update(token);
+            await _db.SaveChangesAsync();
+        }
     }
 }

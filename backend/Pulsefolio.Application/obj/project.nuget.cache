@@ -1,8 +1,17 @@
 {
   "version": 2,
-  "dgSpecHash": "vbQC9C92KbXmvatEEt8i69M9Ti1raeVf8ZpPKENXVIaA1RHJ/8npu/jDPSc+YfyWcdGJLNCah3l8I9ZPF60gDQ==",
+  "dgSpecHash": "3eYpmK/VewO1PaJjjXWe3D6pjdBXAps5/Tob/PwxS8yAq89pfiMzSC3MfQTGnGHCYPMz0ig9aR5hMlwroDO0wA==",
   "success": true,
   "projectFilePath": "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Application/Pulsefolio.Application.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/home/sai-vittal-sirimamidi/.nuget/packages/automapper/12.0.1/automapper.12.0.1.nupkg.sha512",
+    "/home/sai-vittal-sirimamidi/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.1/automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
+    "/home/sai-vittal-sirimamidi/.nuget/packages/bcrypt.net-next/4.0.2/bcrypt.net-next.4.0.2.nupkg.sha512",
+    "/home/sai-vittal-sirimamidi/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",
+    "/home/sai-vittal-sirimamidi/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/6.0.0/microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512",
+    "/home/sai-vittal-sirimamidi/.nuget/packages/microsoft.extensions.options/6.0.0/microsoft.extensions.options.6.0.0.nupkg.sha512",
+    "/home/sai-vittal-sirimamidi/.nuget/packages/microsoft.extensions.primitives/6.0.0/microsoft.extensions.primitives.6.0.0.nupkg.sha512",
+    "/home/sai-vittal-sirimamidi/.nuget/packages/system.runtime.compilerservices.unsafe/6.0.0/system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
   "logs": []
 }
