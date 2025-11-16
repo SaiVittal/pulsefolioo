@@ -45,5 +45,68 @@
             Tests authentication and returns user context.
             </summary>
         </member>
+        <member name="T:ValuationController">
+            <summary>
+            Controller for handling valuation requests for portfolios.
+            </summary>
+        </member>
+        <member name="M:ValuationController.#ctor(Pulsefolio.Application.Interfaces.Messaging.IMessagePublisher)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ValuationController"/> class.
+            </summary>
+            <param name="publisher">The message publisher used to enqueue valuation requests.</param>
+        </member>
+        <member name="M:ValuationController.RequestValuation(System.Guid)">
+            <summary>
+            Requests a valuation for the specified portfolio.
+            </summary>
+            <param name="portfolioId">The unique identifier of the portfolio to be valued.</param>
+            <returns>An <see cref="T:Microsoft.AspNetCore.Mvc.AcceptedResult"/> containing the valuation request status.</returns>
+        </member>
+        <member name="T:ValuationCompletedConsumer">
+            <summary>
+            Background RabbitMQ consumer that listens for valuation completion events
+            and pushes them to connected SignalR clients.
+            </summary>
+        </member>
+        <member name="M:ValuationCompletedConsumer.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{ValuationCompletedConsumer},Microsoft.AspNetCore.SignalR.IHubContext{PortfolioHub})">
+            <summary>
+            Initializes a new instance of the <see cref="T:ValuationCompletedConsumer"/> class.
+            </summary>
+            <param name="cfg">The application configuration.</param>
+            <param name="logger">The logger instance.</param>
+            <param name="hub">The SignalR hub context for PortfolioHub.</param>
+        </member>
+        <member name="M:ValuationCompletedConsumer.ExecuteAsync(System.Threading.CancellationToken)">
+            <summary>
+            Executes the background service to consume valuation completion events from RabbitMQ.
+            </summary>
+            <param name="stoppingToken">A cancellation token that can be used to stop the service.</param>
+            <returns>A Task representing the background operation.</returns>
+        </member>
+        <member name="M:ValuationCompletedConsumer.Dispose">
+            <summary>
+            Releases the resources used by the <see cref="T:ValuationCompletedConsumer"/> class.
+            </summary>
+        </member>
+        <member name="T:PortfolioHub">
+            <summary>
+            SignalR hub that allows clients to subscribe/unsubscribe to portfolio groups to receive real-time updates.
+            </summary>
+        </member>
+        <member name="M:PortfolioHub.SubscribeToPortfolio(System.String)">
+            <summary>
+            Subscribes the current client connection to a portfolio group to receive real-time updates.
+            </summary>
+            <param name="portfolioId">The portfolio group identifier to subscribe to.</param>
+            <returns>A task representing the asynchronous subscription operation.</returns>
+        </member>
+        <member name="M:PortfolioHub.UnsubscribeFromPortfolio(System.String)">
+            <summary>
+            Unsubscribes the current client connection from a portfolio group.
+            </summary>
+            <param name="portfolioId">The portfolio group identifier to unsubscribe from.</param>
+            <returns>A task representing the asynchronous unsubscription operation.</returns>
+        </member>
     </members>
 </doc>

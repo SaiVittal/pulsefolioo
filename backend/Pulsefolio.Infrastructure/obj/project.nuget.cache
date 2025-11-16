@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "7cFgfuVu0gpC41QQKO72fAisp19wgtxF204i5Fi1tgdNwWNbBpULmRtTCoQByAPiQqlbwWxYyC0VbP/YAlzWIg==",
+  "dgSpecHash": "VP71dhkeOyJnO9JNPUWZLCs0Dj2Ywbs/9DRRF5ei1/M5cSOqkxUzfmVAYrSg4KY34jCJ+Eqqf6Cr5P8uUiuPug==",
   "success": true,
   "projectFilePath": "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Infrastructure/Pulsefolio.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -48,7 +48,7 @@
     "/home/sai-vittal-sirimamidi/.nuget/packages/npgsql/9.0.3/npgsql.9.0.3.nupkg.sha512",
     "/home/sai-vittal-sirimamidi/.nuget/packages/npgsql.entityframeworkcore.postgresql/9.0.4/npgsql.entityframeworkcore.postgresql.9.0.4.nupkg.sha512",
     "/home/sai-vittal-sirimamidi/.nuget/packages/pipelines.sockets.unofficial/2.2.8/pipelines.sockets.unofficial.2.2.8.nupkg.sha512",
-    "/home/sai-vittal-sirimamidi/.nuget/packages/rabbitmq.client/7.2.0/rabbitmq.client.7.2.0.nupkg.sha512",
+    "/home/sai-vittal-sirimamidi/.nuget/packages/rabbitmq.client/6.5.0/rabbitmq.client.6.5.0.nupkg.sha512",
     "/home/sai-vittal-sirimamidi/.nuget/packages/stackexchange.redis/2.9.32/stackexchange.redis.2.9.32.nupkg.sha512",
     "/home/sai-vittal-sirimamidi/.nuget/packages/system.codedom/6.0.0/system.codedom.6.0.0.nupkg.sha512",
     "/home/sai-vittal-sirimamidi/.nuget/packages/system.collections.immutable/7.0.0/system.collections.immutable.7.0.0.nupkg.sha512",
@@ -61,12 +61,12 @@
     "/home/sai-vittal-sirimamidi/.nuget/packages/system.diagnostics.diagnosticsource/9.0.10/system.diagnostics.diagnosticsource.9.0.10.nupkg.sha512",
     "/home/sai-vittal-sirimamidi/.nuget/packages/system.identitymodel.tokens.jwt/8.0.1/system.identitymodel.tokens.jwt.8.0.1.nupkg.sha512",
     "/home/sai-vittal-sirimamidi/.nuget/packages/system.io.pipelines/10.0.0/system.io.pipelines.10.0.0.nupkg.sha512",
+    "/home/sai-vittal-sirimamidi/.nuget/packages/system.memory/4.5.5/system.memory.4.5.5.nupkg.sha512",
     "/home/sai-vittal-sirimamidi/.nuget/packages/system.reflection.metadata/7.0.0/system.reflection.metadata.7.0.0.nupkg.sha512",
     "/home/sai-vittal-sirimamidi/.nuget/packages/system.runtime.compilerservices.unsafe/6.0.0/system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "/home/sai-vittal-sirimamidi/.nuget/packages/system.text.encodings.web/10.0.0/system.text.encodings.web.10.0.0.nupkg.sha512",
     "/home/sai-vittal-sirimamidi/.nuget/packages/system.text.json/10.0.0/system.text.json.10.0.0.nupkg.sha512",
-    "/home/sai-vittal-sirimamidi/.nuget/packages/system.threading.channels/7.0.0/system.threading.channels.7.0.0.nupkg.sha512",
-    "/home/sai-vittal-sirimamidi/.nuget/packages/system.threading.ratelimiting/8.0.0/system.threading.ratelimiting.8.0.0.nupkg.sha512"
+    "/home/sai-vittal-sirimamidi/.nuget/packages/system.threading.channels/7.0.0/system.threading.channels.7.0.0.nupkg.sha512"
   ],
   "logs": []
 }

@@ -14,6 +14,8 @@ using Pulsefolio.Application.Mapping;
 using Pulsefolio.Application.Common.Security;
 using System.Reflection;
 using Microsoft.OpenApi.Models;
+using Pulsefolio.Application.Interfaces.Messaging;
+using Pulsefolio.Infrastructure.Messaging;
 var builder = WebApplication.CreateBuilder(args);
 
 // DbContext
@@ -94,6 +96,7 @@ builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
 builder.Services.AddScoped<IHoldingRepository, HoldingRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<IValuationSnapshotRepository, ValuationSnapshotRepository>();
 
 // Register Services
 builder.Services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
@@ -103,12 +106,20 @@ builder.Services.AddScoped<IPortfolioService, PortfolioService>();
 builder.Services.AddScoped<IHoldingService, HoldingService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<ITokenService, JwtTokenService>();
+builder.Services.AddSingleton<IMessagePublisher, RabbitMqPublisher>();
+
+builder.Services.AddSignalR();
+builder.Services.AddHostedService<ValuationCompletedConsumer>();
+// map endpoint
+
+
 builder.WebHost.UseUrls("http://localhost:5188");
 
 var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+app.MapHub<PortfolioHub>("/hubs/portfolio");
 
 app.UseAuthentication();
 app.UseAuthorization();

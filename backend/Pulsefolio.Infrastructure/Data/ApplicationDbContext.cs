@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Pulsefolio.Domain.Entities;
+using Pulsefolio.Domain.Entities.Valuations;
 
 namespace Pulsefolio.Infrastructure.Data
 {
@@ -9,7 +10,7 @@ namespace Pulsefolio.Infrastructure.Data
             : base(options)
         {
         }
-
+public DbSet<ValuationSnapshot> ValuationSnapshots { get; set; } = null!;
         public DbSet<User> Users { get; set; }
         public DbSet<Portfolio> Portfolios { get; set; }
         public DbSet<Holding> Holdings { get; set; }
@@ -22,6 +23,16 @@ namespace Pulsefolio.Infrastructure.Data
 
             // Apply entity configuration automatically
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+            modelBuilder.Entity<ValuationSnapshot>(eb =>
+        {
+            eb.ToTable("ValuationSnapshots");
+            eb.HasKey(v => v.Id);
+            eb.Property(v => v.HoldingsJson).HasColumnType("jsonb"); // Postgres JSONB
+            eb.Property(v => v.TotalValue).HasColumnType("numeric(28,8)");
+            eb.Property(v => v.CreatedAt).HasDefaultValueSql("NOW()");
+            eb.HasIndex(v => v.PortfolioId);
+        });
+            
         }
     }
 }

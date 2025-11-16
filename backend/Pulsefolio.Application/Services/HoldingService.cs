@@ -22,15 +22,17 @@ namespace Pulsefolio.Application.Interfaces.Services
 
         public async Task<HoldingDto> CreateAsync(CreateHoldingDto dto, Guid userId)
         {
-            var portfolio = await _portfolioRepo.GetByIdAsync(dto.PortfolioId);
-            if (portfolio == null || portfolio.UserId != userId) throw new NotFoundException("Portfolio not found or access denied.");
+            var portfolio = await _portfolioRepo.GetByIdAsync(dto.PortfolioId)
+                            ?? throw new NotFoundException("Portfolio not found.");
 
-            // Create holding entity
+            if (portfolio.UserId != userId)
+                throw new NotFoundException("Portfolio not found or access denied.");
+
             var holding = new Holding
             {
                 Id = Guid.NewGuid(),
                 PortfolioId = dto.PortfolioId,
-                Symbol = dto.Symbol.Trim().ToUpper(),
+                Symbol = (dto.Symbol ?? string.Empty).Trim().ToUpperInvariant(),
                 Quantity = dto.Quantity,
                 AveragePrice = dto.BuyPrice,
                 CreatedAt = DateTime.UtcNow
@@ -43,10 +45,13 @@ namespace Pulsefolio.Application.Interfaces.Services
 
         public async Task<List<HoldingDto>> GetHoldingsAsync(Guid portfolioId, Guid userId)
         {
-            var portfolio = await _portfolioRepo.GetByIdAsync(portfolioId);
-            if (portfolio == null || portfolio.UserId != userId) throw new NotFoundException("Portfolio not found or access denied.");
+            var portfolio = await _portfolioRepo.GetByIdAsync(portfolioId)
+                           ?? throw new NotFoundException("Portfolio not found.");
 
-            var holdings = await _holdingRepo.GetByPortfolioIdAsync(portfolioId);
+            if (portfolio.UserId != userId)
+                throw new NotFoundException("Portfolio not found or access denied.");
+
+            var holdings = await _holdingRepo.GetByPortfolioIdAsync(portfolioId) ?? new List<Holding>();
             return _mapper.Map<List<HoldingDto>>(holdings);
         }
     }

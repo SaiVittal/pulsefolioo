@@ -39,7 +39,7 @@ namespace Pulsefolio.Application.Interfaces.Services
                 HoldingId = dto.HoldingId,
                 Quantity = dto.Quantity,
                 Price = dto.Price,
-                Type = dto.Type,
+                Type = dto.Type ?? throw new BadRequestException("Transaction type is required."),
                 CreatedAt = DateTime.UtcNow
             };
 
