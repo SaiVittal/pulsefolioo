@@ -19,20 +19,21 @@
             <summary>
             Registers a new user and returns JWT access + refresh tokens.
             </summary>
-            <param name="dto">User's email and password.</param>
-            <returns>Access token, refresh token, and user ID.</returns>
         </member>
         <member name="M:AuthController.Login(Pulsefolio.Application.DTOs.Auth.LoginUserDto)">
             <summary>
             Logs in a user and issues new access + refresh tokens.
             </summary>
-            <param name="dto">Email and password.</param>
         </member>
         <member name="M:AuthController.Refresh(System.String)">
             <summary>
             Creates a new access token using a valid refresh token.
             </summary>
-            <param name="refreshToken">The refresh token string.</param>
+        </member>
+        <member name="M:AuthController.Me">
+            <summary>
+            Returns the authenticated user's profile info from JWT.
+            </summary>
         </member>
         <member name="T:Pulsefolio.API.Controllers.TestController">
             <summary>
@@ -41,9 +42,8 @@
         </member>
         <member name="M:Pulsefolio.API.Controllers.TestController.SecureEndpoint">
             <summary>
-            Retrieves a secure endpoint that requires authentication.
+            Tests authentication and returns user context.
             </summary>
-            <returns>An OK response with an authenticated user message.</returns>
         </member>
     </members>
 </doc>

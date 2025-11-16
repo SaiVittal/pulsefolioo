@@ -1,7 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Pulsefolio.Application.Interfaces.Services;
 using Pulsefolio.Application.DTOs.Auth;
-
+using System.Security.Claims;
 
 /// <summary>
 /// Controller for handling user authentication operations including registration, login, and token refresh.
@@ -21,8 +22,6 @@ public class AuthController : ControllerBase
     /// <summary>
     /// Registers a new user and returns JWT access + refresh tokens.
     /// </summary>
-    /// <param name="dto">User's email and password.</param>
-    /// <returns>Access token, refresh token, and user ID.</returns>
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterUserDto dto)
     {
@@ -33,7 +32,6 @@ public class AuthController : ControllerBase
     /// <summary>
     /// Logs in a user and issues new access + refresh tokens.
     /// </summary>
-    /// <param name="dto">Email and password.</param>
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginUserDto dto)
     {
@@ -44,11 +42,27 @@ public class AuthController : ControllerBase
     /// <summary>
     /// Creates a new access token using a valid refresh token.
     /// </summary>
-    /// <param name="refreshToken">The refresh token string.</param>
     [HttpPost("refresh")]
     public async Task<IActionResult> Refresh([FromBody] string refreshToken)
     {
         var res = await _auth.RefreshTokenAsync(refreshToken);
         return Ok(res);
+    }
+    
+    /// <summary>
+    /// Returns the authenticated user's profile info from JWT.
+    /// </summary>
+    [Authorize]
+    [HttpGet("me")]
+    public IActionResult Me()
+    {
+        var userId = User.FindFirst("uid")?.Value;
+        var email = User.FindFirst(ClaimTypes.Email)?.Value;
+
+        return Ok(new
+        {
+            userId,
+            email
+        });
     }
 }

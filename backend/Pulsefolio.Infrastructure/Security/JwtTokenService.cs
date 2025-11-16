@@ -26,7 +26,7 @@ namespace Pulsefolio.Infrastructure.Security
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, email),
+                new Claim("email", email.ToString()),
                 new Claim("uid", userId.ToString())
             };
 
