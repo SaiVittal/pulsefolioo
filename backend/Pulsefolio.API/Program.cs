@@ -16,6 +16,9 @@ using System.Reflection;
 using Microsoft.OpenApi.Models;
 using Pulsefolio.Application.Interfaces.Messaging;
 using Pulsefolio.Infrastructure.Messaging;
+using Pulsefolio.Infrastructure.Services;
+using Pulsefolio.Workers;
+using StackExchange.Redis;
 var builder = WebApplication.CreateBuilder(args);
 
 // DbContext
@@ -90,6 +93,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+{
+    var cfg = builder.Configuration;
+    var host = cfg["Redis:Host"] ?? "localhost";
+    var port = cfg["Redis:Port"] ?? "6379";
+
+    return ConnectionMultiplexer.Connect($"{host}:{port}");
+});
+
+
+
+
 // Register Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
@@ -97,8 +112,6 @@ builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
 builder.Services.AddScoped<IHoldingRepository, HoldingRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IValuationSnapshotRepository, ValuationSnapshotRepository>();
-
-// Register Services
 builder.Services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -107,9 +120,18 @@ builder.Services.AddScoped<IHoldingService, HoldingService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<ITokenService, JwtTokenService>();
 builder.Services.AddSingleton<IMessagePublisher, RabbitMqPublisher>();
+builder.Services.AddSingleton<IMarketDataProvider, FakeMarketDataProvider>();
+builder.Services.AddScoped<IValuationSnapshotRepository, ValuationSnapshotRepository>();
+builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
+builder.Services.AddScoped<IPriceCacheService, RedisPriceCacheService>();
+builder.Services.AddScoped<IMarketDataProvider, FakeMarketDataProvider>();
 
+// SignalR and Hosted Services
 builder.Services.AddSignalR();
 builder.Services.AddHostedService<ValuationCompletedConsumer>();
+
+
+
 // map endpoint
 
 

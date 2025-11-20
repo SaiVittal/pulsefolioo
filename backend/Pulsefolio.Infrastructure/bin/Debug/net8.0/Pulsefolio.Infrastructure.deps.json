@@ -22,7 +22,7 @@
           "Pulsefolio.Application": "1.0.0",
           "Pulsefolio.Domain": "1.0.0",
           "RabbitMQ.Client": "6.5.0",
-          "StackExchange.Redis": "2.9.32",
+          "StackExchange.Redis": "2.10.1",
           "System.IdentityModel.Tokens.Jwt": "8.0.1"
         },
         "runtime": {
@@ -716,15 +716,16 @@
           }
         }
       },
-      "StackExchange.Redis/2.9.32": {
+      "StackExchange.Redis/2.10.1": {
         "dependencies": {
           "Microsoft.Extensions.Logging.Abstractions": "9.0.10",
-          "Pipelines.Sockets.Unofficial": "2.2.8"
+          "Pipelines.Sockets.Unofficial": "2.2.8",
+          "System.IO.Hashing": "9.0.10"
         },
         "runtime": {
           "lib/net8.0/StackExchange.Redis.dll": {
             "assemblyVersion": "2.0.0.0",
-            "fileVersion": "2.9.32.54708"
+            "fileVersion": "2.10.1.65101"
           }
         }
       },
@@ -814,6 +815,14 @@
           "lib/net8.0/System.IdentityModel.Tokens.Jwt.dll": {
             "assemblyVersion": "8.0.1.0",
             "fileVersion": "8.0.1.50722"
+          }
+        }
+      },
+      "System.IO.Hashing/9.0.10": {
+        "runtime": {
+          "lib/net8.0/System.IO.Hashing.dll": {
+            "assemblyVersion": "9.0.0.10",
+            "fileVersion": "9.0.1025.47515"
           }
         }
       },
@@ -1200,12 +1209,12 @@
       "path": "rabbitmq.client/6.5.0",
       "hashPath": "rabbitmq.client.6.5.0.nupkg.sha512"
     },
-    "StackExchange.Redis/2.9.32": {
+    "StackExchange.Redis/2.10.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-j5Rjbf7gWz5izrn0UWQy9RlQY4cQDPkwJfVqATnVsOa/+zzJrps12LOgacMsDl/Vit2f01cDiDkG/Rst8v2iGw==",
-      "path": "stackexchange.redis/2.9.32",
-      "hashPath": "stackexchange.redis.2.9.32.nupkg.sha512"
+      "sha512": "sha512-se08WZvD42H3bV4XBW07pupTiE2/72qStKyi/lRqqcijksFWfRtwLTuhFtZ4OX19f4+we/2qruFZBXYJBFc8PQ==",
+      "path": "stackexchange.redis/2.10.1",
+      "hashPath": "stackexchange.redis.2.10.1.nupkg.sha512"
     },
     "System.CodeDom/6.0.0": {
       "type": "package",
@@ -1276,6 +1285,13 @@
       "sha512": "sha512-GJw3bYkWpOgvN3tJo5X4lYUeIFA2HD293FPUhKmp7qxS+g5ywAb34Dnd3cDAFLkcMohy5XTpoaZ4uAHuw0uSPQ==",
       "path": "system.identitymodel.tokens.jwt/8.0.1",
       "hashPath": "system.identitymodel.tokens.jwt.8.0.1.nupkg.sha512"
+    },
+    "System.IO.Hashing/9.0.10": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9gv5z71xaWWmcGEs4bXdreIhKp2kYLK2fvPK5gQkgnWMYvZ8ieaxKofDjxL3scZiEYfi/yW2nJTiKV2awcWEdA==",
+      "path": "system.io.hashing/9.0.10",
+      "hashPath": "system.io.hashing.9.0.10.nupkg.sha512"
     },
     "System.IO.Pipelines/10.0.0": {
       "type": "package",

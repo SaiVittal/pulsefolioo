@@ -4,6 +4,108 @@
         <name>Pulsefolio.API</name>
     </assembly>
     <members>
+        <member name="T:Pulsefolio.Workers.ValuationCompletedConsumer">
+            <summary>
+            Background service that consumes "valuation.completed" messages from RabbitMQ
+            and forwards them to connected SignalR clients in the appropriate portfolio group.
+            </summary>
+        </member>
+        <member name="M:Pulsefolio.Workers.ValuationCompletedConsumer.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{Pulsefolio.Workers.ValuationCompletedConsumer},Microsoft.AspNetCore.SignalR.IHubContext{PortfolioHub})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Pulsefolio.Workers.ValuationCompletedConsumer"/> class.
+            </summary>
+            <param name="cfg">Application configuration containing RabbitMQ settings.</param>
+            <param name="logger">Logger used for diagnostic messages.</param>
+            <param name="hub">SignalR hub context used to forward valuation completed messages to clients.</param>
+        </member>
+        <member name="M:Pulsefolio.Workers.ValuationCompletedConsumer.ExecuteAsync(System.Threading.CancellationToken)">
+            <summary>
+            Execute the background consumer loop which listens for RabbitMQ messages
+            on the "valuation.completed" queue and forwards them to SignalR clients
+            grouped by portfolio id.
+            </summary>
+            <param name="stoppingToken">A token that is signaled when the host is shutting down.</param>
+            <returns>A Task that represents the lifetime of the background operation.</returns>
+        </member>
+        <member name="M:Pulsefolio.Workers.ValuationCompletedConsumer.Dispose">
+            <summary>
+            Disposes of the RabbitMQ connection and channel resources.
+            </summary>
+        </member>
+        <member name="T:Pulsefolio.API.Controllers.HoldingController">
+            <summary>
+            Handles operations related to individual portfolio holdings.
+            </summary>
+        </member>
+        <member name="M:Pulsefolio.API.Controllers.HoldingController.#ctor(Pulsefolio.Application.Interfaces.Services.IHoldingService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Pulsefolio.API.Controllers.HoldingController"/> class.
+            </summary>
+            <param name="holdingService">The holding service dependency.</param>
+        </member>
+        <member name="M:Pulsefolio.API.Controllers.HoldingController.CreateHolding(Pulsefolio.Application.DTOs.Holding.CreateHoldingDto)">
+            <summary>
+            Adds a new holding to a user's portfolio.
+            </summary>
+            <param name="dto">The holding creation details.</param>
+            <returns>The created holding.</returns>
+            <response code="200">Returns the created holding.</response>
+            <response code="404">Portfolio not found or access denied.</response>
+        </member>
+        <member name="M:Pulsefolio.API.Controllers.HoldingController.GetPortfolioHoldings(System.Guid)">
+            <summary>
+            Retrieves all holdings belonging to a specific portfolio.
+            </summary>
+            <param name="portfolioId">The portfolio identifier.</param>
+            <returns>A list of holdings.</returns>
+            <response code="200">Returns list of holdings.</response>
+            <response code="404">Portfolio not found or access denied.</response>
+        </member>
+        <member name="T:Pulsefolio.API.Controllers.PortfolioController">
+            <summary>
+            Handles all portfolio-related operations including creation, retrieval, and deletion.
+            </summary>
+        </member>
+        <member name="M:Pulsefolio.API.Controllers.PortfolioController.#ctor(Pulsefolio.Application.Interfaces.Services.IPortfolioService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Pulsefolio.API.Controllers.PortfolioController"/> class.
+            </summary>
+            <param name="portfolioService">The portfolio service dependency.</param>
+        </member>
+        <member name="M:Pulsefolio.API.Controllers.PortfolioController.CreatePortfolio(Pulsefolio.Application.DTOs.Portfolio.CreatePortfolioDto)">
+            <summary>
+            Creates a new portfolio for the authenticated user.
+            </summary>
+            <param name="dto">Portfolio creation details.</param>
+            <returns>The created portfolio.</returns>
+            <response code="200">Returns the created portfolio.</response>
+            <response code="400">If validation fails.</response>
+        </member>
+        <member name="M:Pulsefolio.API.Controllers.PortfolioController.GetUserPortfolios">
+            <summary>
+            Retrieves all portfolios owned by the authenticated user.
+            </summary>
+            <returns>A list of portfolios.</returns>
+        </member>
+        <member name="M:Pulsefolio.API.Controllers.PortfolioController.DeletePortfolio(System.Guid)">
+            <summary>
+            Deletes a portfolio owned by the authenticated user.
+            </summary>
+            <param name="portfolioId">The portfolio identifier.</param>
+            <returns>No content.</returns>
+            <response code="204">Successfully deleted.</response>
+            <response code="404">If portfolio does not exist or access denied.</response>
+        </member>
+        <member name="T:Pulsefolio.API.Controllers.TestController">
+            <summary>
+            Controller for testing authenticated endpoints.
+            </summary>
+        </member>
+        <member name="M:Pulsefolio.API.Controllers.TestController.SecureEndpoint">
+            <summary>
+            Tests authentication and returns user context.
+            </summary>
+        </member>
         <member name="T:AuthController">
             <summary>
             Controller for handling user authentication operations including registration, login, and token refresh.
@@ -35,16 +137,6 @@
             Returns the authenticated user's profile info from JWT.
             </summary>
         </member>
-        <member name="T:Pulsefolio.API.Controllers.TestController">
-            <summary>
-            Controller for testing authenticated endpoints.
-            </summary>
-        </member>
-        <member name="M:Pulsefolio.API.Controllers.TestController.SecureEndpoint">
-            <summary>
-            Tests authentication and returns user context.
-            </summary>
-        </member>
         <member name="T:ValuationController">
             <summary>
             Controller for handling valuation requests for portfolios.
@@ -62,32 +154,6 @@
             </summary>
             <param name="portfolioId">The unique identifier of the portfolio to be valued.</param>
             <returns>An <see cref="T:Microsoft.AspNetCore.Mvc.AcceptedResult"/> containing the valuation request status.</returns>
-        </member>
-        <member name="T:ValuationCompletedConsumer">
-            <summary>
-            Background RabbitMQ consumer that listens for valuation completion events
-            and pushes them to connected SignalR clients.
-            </summary>
-        </member>
-        <member name="M:ValuationCompletedConsumer.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{ValuationCompletedConsumer},Microsoft.AspNetCore.SignalR.IHubContext{PortfolioHub})">
-            <summary>
-            Initializes a new instance of the <see cref="T:ValuationCompletedConsumer"/> class.
-            </summary>
-            <param name="cfg">The application configuration.</param>
-            <param name="logger">The logger instance.</param>
-            <param name="hub">The SignalR hub context for PortfolioHub.</param>
-        </member>
-        <member name="M:ValuationCompletedConsumer.ExecuteAsync(System.Threading.CancellationToken)">
-            <summary>
-            Executes the background service to consume valuation completion events from RabbitMQ.
-            </summary>
-            <param name="stoppingToken">A cancellation token that can be used to stop the service.</param>
-            <returns>A Task representing the background operation.</returns>
-        </member>
-        <member name="M:ValuationCompletedConsumer.Dispose">
-            <summary>
-            Releases the resources used by the <see cref="T:ValuationCompletedConsumer"/> class.
-            </summary>
         </member>
         <member name="T:PortfolioHub">
             <summary>

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pulsefolio.Domain", "Pulsef
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pulsefolio.Infrastructure", "Pulsefolio.Infrastructure\Pulsefolio.Infrastructure.csproj", "{C982C5E8-A66A-4E27-88B2-298E280B5FED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pulsefolio.Workers", "Pulsefolio.Workers\Pulsefolio.Workers.csproj", "{CA292156-B5E3-4000-9AA2-5A691C5BEA33}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{C982C5E8-A66A-4E27-88B2-298E280B5FED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C982C5E8-A66A-4E27-88B2-298E280B5FED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C982C5E8-A66A-4E27-88B2-298E280B5FED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA292156-B5E3-4000-9AA2-5A691C5BEA33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA292156-B5E3-4000-9AA2-5A691C5BEA33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA292156-B5E3-4000-9AA2-5A691C5BEA33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA292156-B5E3-4000-9AA2-5A691C5BEA33}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

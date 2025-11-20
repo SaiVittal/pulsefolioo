@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "z2ZGgMgU4gBtbzbrsxb5MTR+j33SjVTLHQtFbBTJl1rG+AAIB2UXJKeYwzwsDKIhORRYJXUpnfw1ZcxTAtLtWA==",
+  "dgSpecHash": "ZOo9a8p8qoNyH4OdPX/L3XTzaXVfmdNw6QQD4Ttmwz7G5A0EPMxFFax44KrW+v8o0C/VID0cEb+viTYfSp9dEA==",
   "success": true,
   "projectFilePath": "/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.API/Pulsefolio.API.csproj",
   "expectedPackageFiles": [
@@ -69,7 +69,7 @@
     "/home/sai-vittal-sirimamidi/.nuget/packages/serilog.sinks.console/6.0.0/serilog.sinks.console.6.0.0.nupkg.sha512",
     "/home/sai-vittal-sirimamidi/.nuget/packages/serilog.sinks.debug/3.0.0/serilog.sinks.debug.3.0.0.nupkg.sha512",
     "/home/sai-vittal-sirimamidi/.nuget/packages/serilog.sinks.file/6.0.0/serilog.sinks.file.6.0.0.nupkg.sha512",
-    "/home/sai-vittal-sirimamidi/.nuget/packages/stackexchange.redis/2.9.32/stackexchange.redis.2.9.32.nupkg.sha512",
+    "/home/sai-vittal-sirimamidi/.nuget/packages/stackexchange.redis/2.10.1/stackexchange.redis.2.10.1.nupkg.sha512",
     "/home/sai-vittal-sirimamidi/.nuget/packages/swashbuckle.aspnetcore/9.0.6/swashbuckle.aspnetcore.9.0.6.nupkg.sha512",
     "/home/sai-vittal-sirimamidi/.nuget/packages/swashbuckle.aspnetcore.swagger/9.0.6/swashbuckle.aspnetcore.swagger.9.0.6.nupkg.sha512",
     "/home/sai-vittal-sirimamidi/.nuget/packages/swashbuckle.aspnetcore.swaggergen/9.0.6/swashbuckle.aspnetcore.swaggergen.9.0.6.nupkg.sha512",
@@ -84,6 +84,7 @@
     "/home/sai-vittal-sirimamidi/.nuget/packages/system.composition.typedparts/7.0.0/system.composition.typedparts.7.0.0.nupkg.sha512",
     "/home/sai-vittal-sirimamidi/.nuget/packages/system.diagnostics.diagnosticsource/9.0.10/system.diagnostics.diagnosticsource.9.0.10.nupkg.sha512",
     "/home/sai-vittal-sirimamidi/.nuget/packages/system.identitymodel.tokens.jwt/8.0.1/system.identitymodel.tokens.jwt.8.0.1.nupkg.sha512",
+    "/home/sai-vittal-sirimamidi/.nuget/packages/system.io.hashing/9.0.10/system.io.hashing.9.0.10.nupkg.sha512",
     "/home/sai-vittal-sirimamidi/.nuget/packages/system.io.pipelines/10.0.0/system.io.pipelines.10.0.0.nupkg.sha512",
     "/home/sai-vittal-sirimamidi/.nuget/packages/system.memory/4.5.5/system.memory.4.5.5.nupkg.sha512",
     "/home/sai-vittal-sirimamidi/.nuget/packages/system.reflection.metadata/7.0.0/system.reflection.metadata.7.0.0.nupkg.sha512",

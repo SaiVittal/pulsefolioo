@@ -193,6 +193,34 @@ namespace Pulsefolio.Infrastructure.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("Pulsefolio.Domain.Entities.Valuations.ValuationSnapshot", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("HoldingsJson")
+                        .IsRequired()
+                        .HasColumnType("jsonb");
+
+                    b.Property<Guid>("PortfolioId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("TotalValue")
+                        .HasColumnType("numeric(28,8)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PortfolioId");
+
+                    b.ToTable("ValuationSnapshots", (string)null);
+                });
+
             modelBuilder.Entity("Pulsefolio.Domain.Entities.Holding", b =>
                 {
                     b.HasOne("Pulsefolio.Domain.Entities.Portfolio", "Portfolio")

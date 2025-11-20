@@ -177,3 +177,4 @@
 /home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.API/bin/Debug/net8.0/Microsoft.Extensions.Configuration.Json.dll
 /home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.API/bin/Debug/net8.0/Microsoft.Extensions.FileProviders.Physical.dll
 /home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.API/bin/Debug/net8.0/Microsoft.Extensions.FileSystemGlobbing.dll
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.API/bin/Debug/net8.0/System.IO.Hashing.dll

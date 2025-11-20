@@ -965,11 +965,12 @@
           }
         }
       },
-      "StackExchange.Redis/2.9.32": {
+      "StackExchange.Redis/2.10.1": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.Logging.Abstractions": "8.0.0",
-          "Pipelines.Sockets.Unofficial": "2.2.8"
+          "Pipelines.Sockets.Unofficial": "2.2.8",
+          "System.IO.Hashing": "9.0.10"
         },
         "compile": {
           "lib/net8.0/StackExchange.Redis.dll": {
@@ -1155,6 +1156,22 @@
           "lib/net8.0/System.IdentityModel.Tokens.Jwt.dll": {
             "related": ".xml"
           }
+        }
+      },
+      "System.IO.Hashing/9.0.10": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/System.IO.Hashing.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/System.IO.Hashing.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net8.0/_._": {}
         }
       },
       "System.IO.Pipelines/10.0.0": {
@@ -3240,10 +3257,10 @@
         "rabbitmq.client.nuspec"
       ]
     },
-    "StackExchange.Redis/2.9.32": {
-      "sha512": "j5Rjbf7gWz5izrn0UWQy9RlQY4cQDPkwJfVqATnVsOa/+zzJrps12LOgacMsDl/Vit2f01cDiDkG/Rst8v2iGw==",
+    "StackExchange.Redis/2.10.1": {
+      "sha512": "se08WZvD42H3bV4XBW07pupTiE2/72qStKyi/lRqqcijksFWfRtwLTuhFtZ4OX19f4+we/2qruFZBXYJBFc8PQ==",
       "type": "package",
-      "path": "stackexchange.redis/2.9.32",
+      "path": "stackexchange.redis/2.10.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3260,7 +3277,7 @@
         "lib/netcoreapp3.1/StackExchange.Redis.xml",
         "lib/netstandard2.0/StackExchange.Redis.dll",
         "lib/netstandard2.0/StackExchange.Redis.xml",
-        "stackexchange.redis.2.9.32.nupkg.sha512",
+        "stackexchange.redis.2.10.1.nupkg.sha512",
         "stackexchange.redis.nuspec"
       ]
     },
@@ -3520,6 +3537,34 @@
         "lib/netstandard2.0/System.IdentityModel.Tokens.Jwt.xml",
         "system.identitymodel.tokens.jwt.8.0.1.nupkg.sha512",
         "system.identitymodel.tokens.jwt.nuspec"
+      ]
+    },
+    "System.IO.Hashing/9.0.10": {
+      "sha512": "9gv5z71xaWWmcGEs4bXdreIhKp2kYLK2fvPK5gQkgnWMYvZ8ieaxKofDjxL3scZiEYfi/yW2nJTiKV2awcWEdA==",
+      "type": "package",
+      "path": "system.io.hashing/9.0.10",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "PACKAGE.md",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/System.IO.Hashing.targets",
+        "buildTransitive/net462/_._",
+        "buildTransitive/net8.0/_._",
+        "buildTransitive/netcoreapp2.0/System.IO.Hashing.targets",
+        "lib/net462/System.IO.Hashing.dll",
+        "lib/net462/System.IO.Hashing.xml",
+        "lib/net8.0/System.IO.Hashing.dll",
+        "lib/net8.0/System.IO.Hashing.xml",
+        "lib/net9.0/System.IO.Hashing.dll",
+        "lib/net9.0/System.IO.Hashing.xml",
+        "lib/netstandard2.0/System.IO.Hashing.dll",
+        "lib/netstandard2.0/System.IO.Hashing.xml",
+        "system.io.hashing.9.0.10.nupkg.sha512",
+        "system.io.hashing.nuspec",
+        "useSharedDesignerContext.txt"
       ]
     },
     "System.IO.Pipelines/10.0.0": {
@@ -3792,7 +3837,7 @@
       "Pulsefolio.Application >= 1.0.0",
       "Pulsefolio.Domain >= 1.0.0",
       "RabbitMQ.Client >= 6.5.0",
-      "StackExchange.Redis >= 2.9.32",
+      "StackExchange.Redis >= 2.10.1",
       "System.IdentityModel.Tokens.Jwt >= 8.0.1"
     ]
   },
@@ -3894,7 +3939,7 @@
           },
           "StackExchange.Redis": {
             "target": "Package",
-            "version": "[2.9.32, )"
+            "version": "[2.10.1, )"
           },
           "System.IdentityModel.Tokens.Jwt": {
             "target": "Package",
