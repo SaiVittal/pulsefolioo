@@ -4,13 +4,12 @@ namespace Pulsefolio.Domain.Entities
 {
     public class Transaction : BaseEntity
     {
-        public Guid HoldingId { get; set; }
-        public Holding? Holding { get; set; }
-
-        public decimal Price { get; set; }
+        public Guid PortfolioId { get; set; }
+        public Guid? HoldingId { get; set; }      // optional link to holding
+        public string Symbol { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty; // "BUY" or "SELL"
         public decimal Quantity { get; set; }
-
-        public string Type { get; set; } = "BUY"; // BUY / SELL
+        public decimal Price { get; set; }
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
     }
 }

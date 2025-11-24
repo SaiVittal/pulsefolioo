@@ -11,6 +11,7 @@ using Pulsefolio.Infrastructure.Services;
 using Pulsefolio.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
+using Pulsefolio.Application.Services;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((context, config) =>
@@ -40,9 +41,35 @@ var host = Host.CreateDefaultBuilder(args)
             return ConnectionMultiplexer.Connect($"{redisHost}:{redisPort}");
         });
 
+// HttpClient for AlphaVantage
+        services.AddHttpClient("AlphaVantageClient", client =>
+        {
+            client.BaseAddress = new Uri(context.Configuration["AlphaVantage:BaseUrl"] ?? "https://www.alphavantage.co");
+            client.Timeout = TimeSpan.FromSeconds(10);
+        });
+
+
+// Register Fake as concrete type so can be injected into Alpha provider
+        services.AddScoped<FakeMarketDataProvider>();
+
+services.AddScoped<IMarketDataProvider>(sp =>
+{
+    var fake = sp.GetRequiredService<FakeMarketDataProvider>();
+    return new AlphaVantageMarketDataProvider(
+        sp.GetRequiredService<IHttpClientFactory>(),
+        sp.GetRequiredService<IPriceCacheService>(),
+        context.Configuration,
+        fake
+    );
+});
+
+services.AddScoped<ITransactionRepository, TransactionRepository>();
+services.AddScoped<IPortfolioAnalyticsService, PortfolioAnalyticsService>();
+
+
 
         // Market Data Provider
-        services.AddScoped<IMarketDataProvider, FakeMarketDataProvider>();
+        // services.AddScoped<IMarketDataProvider, FakeMarketDataProvider>();
 
         // Price Cache Service
         services.AddScoped<IPriceCacheService, RedisPriceCacheService>();

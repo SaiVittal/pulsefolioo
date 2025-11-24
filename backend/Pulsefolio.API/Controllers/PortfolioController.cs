@@ -15,14 +15,20 @@ namespace Pulsefolio.API.Controllers
     public class PortfolioController : ControllerBase
     {
         private readonly IPortfolioService _portfolioService;
-
+        private readonly IPortfolioAnalyticsService _analytics;
+        private readonly IPortfolioSummaryService _summary;
         /// <summary>
         /// Initializes a new instance of the <see cref="PortfolioController"/> class.
         /// </summary>
         /// <param name="portfolioService">The portfolio service dependency.</param>
-        public PortfolioController(IPortfolioService portfolioService)
+        /// <param name="analytics">The portfolio analytics service dependency.</param>
+        /// <param name="summary">The portfolio summary service dependency.</param>
+
+        public PortfolioController(IPortfolioService portfolioService, IPortfolioAnalyticsService analytics, IPortfolioSummaryService summary)
         {
             _portfolioService = portfolioService;
+            _analytics = analytics;
+             _summary = summary;
         }
 
         /// <summary>
@@ -71,5 +77,41 @@ namespace Pulsefolio.API.Controllers
 
             return NoContent();
         }
+
+        /// <summary>
+        /// Returns portfolio PNL snapshot (unrealized + realized + allocations)
+        /// </summary>
+        [HttpGet("{portfolioId:guid}/pnl")]
+        public async Task<IActionResult> GetPortfolioPnl(Guid portfolioId)
+        {
+            var userId = Guid.Parse(User.FindFirst("uid")!.Value);
+
+            // Optional ownership check
+            var userPortfolios = await _portfolioService.GetUserPortfoliosAsync(userId);
+            if (!userPortfolios.Any(p => p.Id == portfolioId))
+                return Forbid();
+
+            var result = await _analytics.ComputePortfolioPnlAsync(portfolioId);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Returns a high-level summary of the portfolio (PNL + allocations + last valuation).
+        /// </summary>
+        [HttpGet("{portfolioId:guid}/summary")]
+        public async Task<IActionResult> GetSummary(Guid portfolioId)
+        {
+            var userId = Guid.Parse(User.FindFirst("uid")!.Value);
+            var userPortfolios = await _portfolioService.GetUserPortfoliosAsync(userId);
+
+            if (!userPortfolios.Any(p => p.Id == portfolioId))
+                return Forbid();
+
+            var result = await _summary.GetSummaryAsync(portfolioId);
+            return Ok(result);
+        }
+
+
+
     }
 }

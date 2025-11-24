@@ -1,10 +1,22 @@
 namespace Pulsefolio.Application.DTOs.Transaction
 {
-    public class CreateTransactionDto
+    public class CreateBuyTransactionDto
     {
-        public Guid HoldingId { get; set; }
+    public Guid PortfolioId { get; set; }
+        public Guid? HoldingId { get; set; } // optional
+        public string Symbol { get; set; } = string.Empty;
         public decimal Quantity { get; set; }
         public decimal Price { get; set; }
-        public string? Type { get; set; } // BUY / SELL
+        public DateTime? Timestamp { get; set; }
+    }
+
+       public class CreateSellTransactionDto
+    {
+        public Guid PortfolioId { get; set; }
+        public Guid? HoldingId { get; set; } // optional
+        public string Symbol { get; set; } = string.Empty;
+        public decimal Quantity { get; set; }
+        public decimal Price { get; set; }
+        public DateTime? Timestamp { get; set; }
     }
 }

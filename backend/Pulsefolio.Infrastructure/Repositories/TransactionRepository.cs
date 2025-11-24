@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Pulsefolio.Domain.Entities;
 using Pulsefolio.Application.Interfaces.Repositories;
+using Pulsefolio.Domain.Entities;
 using Pulsefolio.Infrastructure.Data;
 
 namespace Pulsefolio.Infrastructure.Repositories
@@ -8,23 +8,32 @@ namespace Pulsefolio.Infrastructure.Repositories
     public class TransactionRepository : ITransactionRepository
     {
         private readonly ApplicationDbContext _db;
+        public TransactionRepository(ApplicationDbContext db) => _db = db;
 
-        public TransactionRepository(ApplicationDbContext db)
+        public async Task AddAsync(Transaction txn)
         {
-            _db = db;
-        }
-
-        public async Task AddAsync(Transaction tx)
-        {
-            await _db.Transactions.AddAsync(tx);
+            await _db.Transactions.AddAsync(txn);
             await _db.SaveChangesAsync();
         }
 
-        public async Task<List<Transaction>> GetByHoldingIdAsync(Guid holdingId)
+        public Task<Transaction?> GetByIdAsync(Guid id)
         {
-            return await _db.Transactions
+            return _db.Transactions.FindAsync(id).AsTask();
+        }
+
+        public Task<List<Transaction>> GetByPortfolioIdAsync(Guid portfolioId)
+        {
+            return _db.Transactions
+                .Where(t => t.PortfolioId == portfolioId)
+                .OrderBy(t => t.Timestamp)
+                .ToListAsync();
+        }
+
+        public Task<List<Transaction>> GetByHoldingIdAsync(Guid holdingId)
+        {
+            return _db.Transactions
                 .Where(t => t.HoldingId == holdingId)
-                .OrderByDescending(t => t.CreatedAt)
+                .OrderBy(t => t.Timestamp)
                 .ToListAsync();
         }
     }

@@ -1,0 +1,269 @@
+### ==========================================
+### PULSEFOLIO API TESTS
+### ==========================================
+### Run requests in order from top to bottom
+### Click "Send Request" above each section
+### ==========================================
+
+### ENVIRONMENT VARIABLES
+@baseUrl = http://localhost:5188
+@email = Pulsefolio_test1@gmail.com
+@password = SaiVittal@25
+
+### ==========================================
+### STEP 1: AUTHENTICATION
+### ==========================================
+
+///Register New User (Only if user doesn't exist)
+
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+
+### 1.1 - Login (Run this FIRST)
+# @name login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### Extract tokens from login response
+@accessToken = {{login.response.body.accessToken}}
+@refreshToken = {{login.response.body.refreshToken}}
+@userId = {{login.response.body.user.id}}
+
+### 1.2 - Verify Authentication
+GET {{baseUrl}}/api/auth/me
+Authorization: Bearer {{accessToken}}
+
+### 1.3 - Register New User (Optional - only if login fails)
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### 1.4 - Refresh Token (Optional - if token expires)
+POST {{baseUrl}}/api/auth/refresh
+Content-Type: application/json
+
+"{{refreshToken}}"
+
+### ==========================================
+### STEP 2: PORTFOLIO MANAGEMENT
+### ==========================================
+
+### 2.1 - Create Portfolio
+# @name createPortfolio
+POST {{baseUrl}}/api/portfolio
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Test Portfolio - {{$datetime iso8601}}"
+}
+
+### Extract portfolio ID
+@portfolioId = {{createPortfolio.response.body.id}}
+
+### 2.2 - Get My Portfolios
+GET {{baseUrl}}/api/portfolio/user
+Authorization: Bearer {{accessToken}}
+
+### 2.3 - Get Portfolio Summary
+GET {{baseUrl}}/api/portfolio/{{portfolioId}}/summary
+Authorization: Bearer {{accessToken}}
+
+### 2.4 - Get Portfolio PnL
+GET {{baseUrl}}/api/portfolio/{{portfolioId}}/pnl
+Authorization: Bearer {{accessToken}}
+
+### ==========================================
+### STEP 3: TRADING - BUY STOCKS
+### ==========================================
+
+### 3.1 - Buy AAPL Stock
+POST {{baseUrl}}/api/transactions/buy
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "portfolioId": "{{portfolioId}}",
+  "symbol": "AAPL",
+  "quantity": 10,
+  "price": 175.50
+}
+
+### 3.2 - Buy MSFT Stock
+POST {{baseUrl}}/api/transactions/buy
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "portfolioId": "{{portfolioId}}",
+  "symbol": "MSFT",
+  "quantity": 5,
+  "price": 380.00
+}
+
+### 3.3 - Buy GOOGL Stock
+POST {{baseUrl}}/api/transactions/buy
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "portfolioId": "{{portfolioId}}",
+  "symbol": "GOOGL",
+  "quantity": 8,
+  "price": 142.50
+}
+
+### ==========================================
+### STEP 4: CHECK PORTFOLIO STATUS
+### ==========================================
+
+### 4.1 - Get Updated Portfolio Summary
+GET {{baseUrl}}/api/portfolio/{{portfolioId}}/summary
+Authorization: Bearer {{accessToken}}
+
+### 4.2 - Get Updated PnL
+GET {{baseUrl}}/api/portfolio/{{portfolioId}}/pnl
+Authorization: Bearer {{accessToken}}
+
+### ==========================================
+### STEP 5: TRADING - SELL STOCKS
+### ==========================================
+
+### 5.1 - Sell Some AAPL
+POST {{baseUrl}}/api/transactions/sell
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "portfolioId": "{{portfolioId}}",
+  "symbol": "AAPL",
+  "quantity": 5,
+  "price": 180.00
+}
+
+### 5.2 - Check PnL After Sale
+GET {{baseUrl}}/api/portfolio/{{portfolioId}}/pnl
+Authorization: Bearer {{accessToken}}
+
+### ==========================================
+### STEP 6: HOLDINGS
+### ==========================================
+
+### 6.1 - Create Holding Directly (Alternative to Buy Transaction)
+# @name createHolding
+POST {{baseUrl}}/api/holding
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "portfolioId": "{{portfolioId}}",
+  "symbol": "TSLA",
+  "quantity": 3,
+  "buyPrice": 250.00
+}
+
+### Extract holding ID
+@holdingId = {{createHolding.response.body.id}}
+
+### ==========================================
+### STEP 7: VALUATION
+### ==========================================
+
+### 7.1 - Request Portfolio Valuation
+POST {{baseUrl}}/api/valuation/{{portfolioId}}/request
+Authorization: Bearer {{accessToken}}
+
+### 7.2 - Get Latest Valuation
+GET {{baseUrl}}/api/valuation/{{portfolioId}}/latest
+Authorization: Bearer {{accessToken}}
+
+### ==========================================
+### STEP 8: ANALYTICS
+### ==========================================
+
+### 8.1 - Get Top 10 Portfolios by PnL
+GET {{baseUrl}}/api/analytics/top10
+Authorization: Bearer {{accessToken}}
+
+### ==========================================
+### STEP 9: CLEANUP (OPTIONAL)
+### ==========================================
+
+### 9.1 - Delete Portfolio
+DELETE {{baseUrl}}/api/portfolio/{{portfolioId}}
+Authorization: Bearer {{accessToken}}
+
+### 9.2 - Verify Deletion - Get My Portfolios
+GET {{baseUrl}}/api/portfolio/user
+Authorization: Bearer {{accessToken}}
+
+### ==========================================
+### DEBUGGING REQUESTS
+### ==========================================
+
+### Debug - Check if server is running
+GET {{baseUrl}}/api/auth/me
+Authorization: Bearer INVALID_TOKEN
+
+### Debug - Login with wrong password
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "WrongPassword123"
+}
+
+### ==========================================
+### TESTING WITH DIFFERENT STOCKS
+### ==========================================
+
+### Buy NVDA
+POST {{baseUrl}}/api/transactions/buy
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "portfolioId": "{{portfolioId}}",
+  "symbol": "NVDA",
+  "quantity": 15,
+  "price": 495.00
+}
+
+### Buy AMZN
+POST {{baseUrl}}/api/transactions/buy
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "portfolioId": "{{portfolioId}}",
+  "symbol": "AMZN",
+  "quantity": 12,
+  "price": 178.50
+}
+
+### ==========================================
+### NOTES
+### ==========================================
+# - Click "Send Request" above each ### section
+# - Variables are automatically extracted from responses
+# - Run requests in order (1.1 → 2.1 → 3.1 → etc.)
+# - Response appears in right panel
+# - Green = Success (200-299), Red = Error (400-599)
+# - You can re-run any request by clicking "Send Request" again
+# ==========================================

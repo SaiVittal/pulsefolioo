@@ -13,27 +13,18 @@ namespace Pulsefolio.Infrastructure.Configurations
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Symbol)
-                   .IsRequired()
-                   .HasMaxLength(20);
-
-            builder.Property(x => x.Quantity)
-                   .HasPrecision(18, 4);
+                .HasMaxLength(20)
+                .IsRequired();
 
             builder.Property(x => x.AveragePrice)
-                   .HasPrecision(18, 4);
+                .HasColumnType("numeric(18,2)");
 
-            builder.HasIndex(x => new { x.PortfolioId, x.Symbol })
-                   .IsUnique(); 
-            // Prevent duplicate holdings for same symbol in same portfolio
+            builder.Property(x => x.Quantity)
+                .HasColumnType("numeric(18,4)");
 
-            builder.HasOne(x => x.Portfolio)
+            builder.HasOne<Portfolio>()
                    .WithMany(p => p.Holdings)
                    .HasForeignKey(x => x.PortfolioId);
-
-            builder.HasMany(x => x.Transactions)
-                   .WithOne(t => t.Holding)
-                   .HasForeignKey(t => t.HoldingId)
-                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

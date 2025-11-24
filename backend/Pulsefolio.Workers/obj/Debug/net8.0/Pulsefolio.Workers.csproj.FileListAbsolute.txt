@@ -77,3 +77,4 @@
 /home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Workers/obj/Debug/net8.0/Pulsefolio.Workers.genruntimeconfig.cache
 /home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Workers/obj/Debug/net8.0/ref/Pulsefolio.Workers.dll
 /home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Workers/bin/Debug/net8.0/System.IO.Hashing.dll
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.Workers/bin/Debug/net8.0/Microsoft.Extensions.Http.dll

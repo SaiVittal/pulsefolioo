@@ -10,5 +10,6 @@ namespace Pulsefolio.Domain.Entities
         public User? User { get; set; }
 
         public ICollection<Holding> Holdings { get; set; } = new List<Holding>();
+        public List<Transaction> Transactions { get; set; } = new(); 
     }
 }

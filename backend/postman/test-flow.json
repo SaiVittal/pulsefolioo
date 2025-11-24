@@ -1,0 +1,11 @@
+{
+  "order": [
+    "1. Login",
+    "2. Verify Me", 
+    "1. Create Portfolio",
+    "1. Buy Stock",
+    "3. Get Portfolio PnL",
+    "Request Valuation",
+    "Get Latest Valuation"
+  ]
+}

@@ -178,3 +178,6 @@
 /home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.API/bin/Debug/net8.0/Microsoft.Extensions.FileProviders.Physical.dll
 /home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.API/bin/Debug/net8.0/Microsoft.Extensions.FileSystemGlobbing.dll
 /home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.API/bin/Debug/net8.0/System.IO.Hashing.dll
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.API/bin/Debug/net8.0/Microsoft.Extensions.Diagnostics.dll
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.API/bin/Debug/net8.0/Microsoft.Extensions.Http.dll
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.API/bin/Debug/net8.0/Microsoft.Extensions.Options.ConfigurationExtensions.dll

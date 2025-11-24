@@ -1,0 +1,46 @@
+{
+  "id": "b52a4a0d-0000-4000-8000-000000000001",
+  "name": "Pulsefolio Local",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5188",
+      "enabled": true
+    },
+    {
+      "key": "email",
+      "value": "Pulsefolio_test1@gmail.com",
+      "enabled": true
+    },
+    {
+      "key": "password",
+      "value": "SaiVittal@25",
+      "enabled": true
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "enabled": true
+    },
+    {
+      "key": "refreshToken",
+      "value": "",
+      "enabled": true
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "enabled": true
+    },
+    {
+      "key": "portfolioId",
+      "value": "",
+      "enabled": true
+    },
+    {
+      "key": "holdingId",
+      "value": "",
+      "enabled": true
+    }
+  ]
+}

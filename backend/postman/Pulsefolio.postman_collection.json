@@ -1,0 +1,562 @@
+{
+  "info": {
+    "_postman_id": "6a2c0a32-0a8b-4e6c-9c22-000000000002",
+    "name": "Pulsefolio Backend - Fixed",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "0"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let res = {};",
+                  "try {",
+                  "    res = pm.response.json();",
+                  "} catch(e) {",
+                  "    console.error('Parse error:', e);",
+                  "    return;",
+                  "}",
+                  "",
+                  "if(res.accessToken) {",
+                  "    pm.environment.set('accessToken', res.accessToken);",
+                  "    console.log('Access token saved');",
+                  "}",
+                  "",
+                  "if(res.refreshToken) {",
+                  "    pm.environment.set('refreshToken', res.refreshToken);",
+                  "    console.log('Refresh token saved');",
+                  "}",
+                  "",
+                  "if(res.user && res.user.id) {",
+                  "    pm.environment.set('userId', res.user.id);",
+                  "    console.log('User ID saved');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Me",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let res = {};",
+                  "try {",
+                  "    res = pm.response.json();",
+                  "} catch(e) {",
+                  "    return;",
+                  "}",
+                  "",
+                  "if(res.accessToken) {",
+                  "    pm.environment.set('accessToken', res.accessToken);",
+                  "}",
+                  "",
+                  "if(res.refreshToken) {",
+                  "    pm.environment.set('refreshToken', res.refreshToken);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "\"{{refreshToken}}\""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/refresh",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "refresh"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Portfolio",
+      "item": [
+        {
+          "name": "Create Portfolio",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let res = {};",
+                  "try {",
+                  "    res = pm.response.json();",
+                  "} catch(e) {",
+                  "    return;",
+                  "}",
+                  "",
+                  "if(res.id) {",
+                  "    pm.environment.set('portfolioId', res.id);",
+                  "    console.log('Portfolio ID saved:', res.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"My Portfolio\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/portfolio",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "portfolio"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Portfolios",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/portfolio/user",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "portfolio",
+                "user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Portfolio Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/portfolio/{{portfolioId}}/summary",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "portfolio",
+                "{{portfolioId}}",
+                "summary"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Portfolio PnL",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/portfolio/{{portfolioId}}/pnl",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "portfolio",
+                "{{portfolioId}}",
+                "pnl"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Portfolio",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/portfolio/{{portfolioId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "portfolio",
+                "{{portfolioId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Holdings",
+      "item": [
+        {
+          "name": "Create Holding",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let res = {};",
+                  "try {",
+                  "    res = pm.response.json();",
+                  "} catch(e) {",
+                  "    return;",
+                  "}",
+                  "",
+                  "if(res.id) {",
+                  "    pm.environment.set('holdingId', res.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"portfolioId\": \"{{portfolioId}}\",\n  \"symbol\": \"AAPL\",\n  \"quantity\": 10,\n  \"buyPrice\": 150\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/holding",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "holding"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Buy",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"portfolioId\": \"{{portfolioId}}\",\n  \"symbol\": \"AAPL\",\n  \"quantity\": 10,\n  \"price\": 150\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions/buy",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transactions",
+                "buy"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Sell",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"portfolioId\": \"{{portfolioId}}\",\n  \"symbol\": \"AAPL\",\n  \"quantity\": 5,\n  \"price\": 155\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions/sell",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transactions",
+                "sell"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Valuation",
+      "item": [
+        {
+          "name": "Request Valuation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/valuation/{{portfolioId}}/request",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "valuation",
+                "{{portfolioId}}",
+                "request"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Latest Valuation",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/valuation/{{portfolioId}}/latest",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "valuation",
+                "{{portfolioId}}",
+                "latest"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "item": [
+        {
+          "name": "Top 10 Portfolios",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/analytics/top10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "analytics",
+                "top10"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

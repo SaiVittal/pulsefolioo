@@ -12,21 +12,21 @@ namespace Pulsefolio.Infrastructure.Configurations
 
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Price)
-                   .HasPrecision(18, 4);
-
-            builder.Property(x => x.Quantity)
-                   .HasPrecision(18, 4);
+            builder.Property(x => x.Symbol)
+                .HasMaxLength(20)
+                .IsRequired();
 
             builder.Property(x => x.Type)
-                   .IsRequired()
-                   .HasMaxLength(10);
+                .HasMaxLength(10)
+                .IsRequired();
 
-            builder.HasIndex(x => x.HoldingId);
+            builder.Property(x => x.Price).HasColumnType("numeric(18,2)");
+            builder.Property(x => x.Quantity).HasColumnType("numeric(18,4)");
 
-            builder.HasOne(x => x.Holding)
-                   .WithMany(h => h.Transactions)
-                   .HasForeignKey(x => x.HoldingId);
+            // ONLY relation: Portfolio -> Transactions
+            builder.HasOne<Portfolio>()
+                   .WithMany(p => p.Transactions)
+                   .HasForeignKey(x => x.PortfolioId);
         }
     }
 }

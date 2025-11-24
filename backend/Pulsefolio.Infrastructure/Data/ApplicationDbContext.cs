@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Pulsefolio.Application.DTOs.Analytics;
 using Pulsefolio.Domain.Entities;
 using Pulsefolio.Domain.Entities.Valuations;
 
@@ -32,6 +33,8 @@ public DbSet<ValuationSnapshot> ValuationSnapshots { get; set; } = null!;
             eb.Property(v => v.CreatedAt).HasDefaultValueSql("NOW()");
             eb.HasIndex(v => v.PortfolioId);
         });
+            modelBuilder.Entity<TopPortfolioPnlDto>().HasNoKey();
+
             
         }
     }

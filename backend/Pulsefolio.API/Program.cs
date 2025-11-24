@@ -103,7 +103,32 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 });
 
 
+    // HttpClient for AlphaVantage
+builder.Services.AddHttpClient("AlphaVantageClient", client =>
+{
+    client.BaseAddress = new Uri(
+        builder.Configuration["AlphaVantage:BaseUrl"] ?? "https://www.alphavantage.co"
+    );
+    client.Timeout = TimeSpan.FromSeconds(10);
+});
 
+
+
+    // Register Fake as concrete type so can be injected into Alpha provider
+    builder.Services.AddScoped<FakeMarketDataProvider>(); // concrete
+    builder.Services.AddScoped<IMarketDataProvider>(sp =>
+    {
+        var fake = sp.GetRequiredService<FakeMarketDataProvider>();
+        return new AlphaVantageMarketDataProvider(
+            sp.GetRequiredService<IHttpClientFactory>(),
+            sp.GetRequiredService<IPriceCacheService>(),
+            builder.Configuration,
+            fake
+        );
+    });
+
+
+builder.Services.AddScoped<IPortfolioAnalyticsService, PortfolioAnalyticsService>();
 
 // Register Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -117,18 +142,35 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPortfolioService, PortfolioService>();
 builder.Services.AddScoped<IHoldingService, HoldingService>();
-builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<ITokenService, JwtTokenService>();
 builder.Services.AddSingleton<IMessagePublisher, RabbitMqPublisher>();
-builder.Services.AddSingleton<IMarketDataProvider, FakeMarketDataProvider>();
 builder.Services.AddScoped<IValuationSnapshotRepository, ValuationSnapshotRepository>();
 builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
 builder.Services.AddScoped<IPriceCacheService, RedisPriceCacheService>();
-builder.Services.AddScoped<IMarketDataProvider, FakeMarketDataProvider>();
+// builder.Services.AddScoped<IMarketDataProvider, FakeMarketDataProvider>();
+
+// Portfolio summary service
+builder.Services.AddScoped<IPortfolioSummaryService, PortfolioSummaryService>();
+
+// Valuation query service
+builder.Services.AddScoped<IValuationQueryService, ValuationQueryService>();
+
+
+// Transaction repository
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
+
+// Analytics service
+builder.Services.AddScoped<IPortfolioAnalyticsService, PortfolioAnalyticsService>();
 
 // SignalR and Hosted Services
 builder.Services.AddSignalR();
 builder.Services.AddHostedService<ValuationCompletedConsumer>();
+
+
+// Analytics repository and service
+builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
+builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 
 
 
@@ -147,7 +189,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
 app.Logger.LogInformation("Now listening on: {Url}", "http://localhost:5188");
 
 app.Run();

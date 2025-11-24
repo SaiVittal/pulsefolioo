@@ -29,8 +29,7 @@ namespace Pulsefolio.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("AveragePrice")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("numeric(18,4)");
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -39,7 +38,6 @@ namespace Pulsefolio.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("Quantity")
-                        .HasPrecision(18, 4)
                         .HasColumnType("numeric(18,4)");
 
                     b.Property<string>("Symbol")
@@ -52,8 +50,7 @@ namespace Pulsefolio.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PortfolioId", "Symbol")
-                        .IsUnique();
+                    b.HasIndex("PortfolioId");
 
                     b.ToTable("Holdings", (string)null);
                 });
@@ -130,16 +127,22 @@ namespace Pulsefolio.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("HoldingId")
+                    b.Property<Guid?>("HoldingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("PortfolioId")
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("Price")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("numeric(18,4)");
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<decimal>("Quantity")
-                        .HasPrecision(18, 4)
                         .HasColumnType("numeric(18,4)");
+
+                    b.Property<string>("Symbol")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("timestamp with time zone");
@@ -155,6 +158,8 @@ namespace Pulsefolio.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("HoldingId");
+
+                    b.HasIndex("PortfolioId");
 
                     b.ToTable("Transactions", (string)null);
                 });
@@ -256,13 +261,15 @@ namespace Pulsefolio.Infrastructure.Migrations
 
             modelBuilder.Entity("Pulsefolio.Domain.Entities.Transaction", b =>
                 {
-                    b.HasOne("Pulsefolio.Domain.Entities.Holding", "Holding")
+                    b.HasOne("Pulsefolio.Domain.Entities.Holding", null)
                         .WithMany("Transactions")
-                        .HasForeignKey("HoldingId")
+                        .HasForeignKey("HoldingId");
+
+                    b.HasOne("Pulsefolio.Domain.Entities.Portfolio", null)
+                        .WithMany("Transactions")
+                        .HasForeignKey("PortfolioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Holding");
                 });
 
             modelBuilder.Entity("Pulsefolio.Domain.Entities.Holding", b =>
@@ -273,6 +280,8 @@ namespace Pulsefolio.Infrastructure.Migrations
             modelBuilder.Entity("Pulsefolio.Domain.Entities.Portfolio", b =>
                 {
                     b.Navigation("Holdings");
+
+                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("Pulsefolio.Domain.Entities.User", b =>
