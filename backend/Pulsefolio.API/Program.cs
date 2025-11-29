@@ -19,6 +19,7 @@ using Pulsefolio.Infrastructure.Messaging;
 using Pulsefolio.Infrastructure.Services;
 using Pulsefolio.Workers;
 using StackExchange.Redis;
+using Pulsefolio.Application.Services.Auth;
 var builder = WebApplication.CreateBuilder(args);
 
 // DbContext

@@ -1,0 +1,64 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: pulsefolio_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: pulsefolio_db
+      POSTGRES_USER: portfoliouser
+      POSTGRES_PASSWORD: SaiVittalPortfolio@20
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7
+    container_name: pulsefolio_redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: pulsefolio_rabbit
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: saiadmin123
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Pulsefolio.API/Dockerfile
+    container_name: pulsefolio_api
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+      - rabbitmq
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+    ports:
+      - "5188:8080"
+
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Pulsefolio.Workers/Dockerfile
+    container_name: pulsefolio_worker
+    restart: always
+    depends_on:
+      - rabbitmq
+      - redis
+      - postgres
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+
+volumes:
+  postgres_data:

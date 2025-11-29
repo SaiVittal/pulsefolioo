@@ -6,7 +6,7 @@ using Pulsefolio.Application.Common.Exceptions;
 using Pulsefolio.Domain.Entities;
 using Pulsefolio.Application.Interfaces.Services; 
 using Pulsefolio.Application.Common.Security;  
-namespace Pulsefolio.Application.Interfaces.Services
+namespace Pulsefolio.Application.Services.Auth
 {
     public class AuthService : IAuthService
     {
