@@ -20,11 +20,11 @@ jobs:
         chmod 600 ~/.ssh/ec2_key
 
     - name: Add EC2 host to known_hosts
-      run: ssh-keyscan -H 13.127.11.2 >> ~/.ssh/known_hosts
+      run: ssh-keyscan -H 13.233.37.21 >> ~/.ssh/known_hosts
 
     - name: Deploy to EC2
       run: |
-        ssh -i ~/.ssh/ec2_key ubuntu@13.127.11.2 "
+        ssh -i ~/.ssh/ec2_key ubuntu@13.233.37.21 "
           set -e
 
           cd pulsefolio
