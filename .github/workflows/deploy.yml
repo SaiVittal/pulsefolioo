@@ -2,7 +2,7 @@ name: Deploy to EC2
 
 on:
   push:
-    branches: [ "main" ]   # deploys when you push to main branch
+    branches: [ "master" ]   # deploys when you push to master branch
   workflow_dispatch:        # allows manual trigger in GitHub UI
 
 jobs:
@@ -30,7 +30,7 @@ jobs:
           cd pulsefolio
 
           echo '--- Pulling latest code ---'
-          git pull origin main
+          git pull origin master
 
           echo '--- Stopping existing containers ---'
           sudo docker compose -f docker-compose.prod.yml down
