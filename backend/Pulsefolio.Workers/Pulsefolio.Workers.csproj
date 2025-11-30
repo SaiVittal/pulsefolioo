@@ -12,9 +12,9 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Pulsefolio.Application\Pulsefolio.Application.csproj" />
-    <ProjectReference Include="..\Pulsefolio.Infrastructure\Pulsefolio.Infrastructure.csproj" />
-    <ProjectReference Include="..\Pulsefolio.Domain\Pulsefolio.Domain.csproj" />
-  </ItemGroup>
+<ItemGroup>
+  <None Include="appsettings.json" CopyToPublishDirectory="Always" />
+  <None Include="appsettings.Development.json" CopyToPublishDirectory="Always" />
+  <None Include="appsettings.Production.json" CopyToPublishDirectory="Always" />
+</ItemGroup>
 </Project>
