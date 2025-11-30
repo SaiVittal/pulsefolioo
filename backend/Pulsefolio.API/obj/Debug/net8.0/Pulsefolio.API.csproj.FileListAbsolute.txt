@@ -181,3 +181,4 @@
 /home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.API/bin/Debug/net8.0/Microsoft.Extensions.Diagnostics.dll
 /home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.API/bin/Debug/net8.0/Microsoft.Extensions.Http.dll
 /home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.API/bin/Debug/net8.0/Microsoft.Extensions.Options.ConfigurationExtensions.dll
+/home/sai-vittal-sirimamidi/pulsefolio/backend/Pulsefolio.API/bin/Debug/net8.0/appsettings.Production.json

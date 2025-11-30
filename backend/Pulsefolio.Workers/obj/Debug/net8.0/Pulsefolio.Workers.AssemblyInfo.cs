@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Pulsefolio.Workers")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+69c139e7882ede51c3d090d580bfe1addfa007d2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+307979582d910d5f0c8b9528f77bcf16248a427b")]
 [assembly: System.Reflection.AssemblyProductAttribute("Pulsefolio.Workers")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Pulsefolio.Workers")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

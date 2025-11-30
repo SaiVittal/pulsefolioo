@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Pulsefolio.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b7ed24ebab9fe1c6d3e5031fd8438328f1d9ba05")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+307979582d910d5f0c8b9528f77bcf16248a427b")]
 [assembly: System.Reflection.AssemblyProductAttribute("Pulsefolio.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Pulsefolio.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
