@@ -20,27 +20,40 @@ using Pulsefolio.Infrastructure.Services;
 using Pulsefolio.Workers;
 using StackExchange.Redis;
 using Pulsefolio.Application.Services.Auth;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// DbContext
+// ---------------------------------------------------------------------
+// ✔ Correct Configuration Loading (Fixes your main issue)
+// ---------------------------------------------------------------------
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json",
+                 optional: true,
+                 reloadOnChange: true)
+    .AddEnvironmentVariables();
+
+// ---------------------------------------------------------------------
+// DB Context
+// ---------------------------------------------------------------------
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+// ---------------------------------------------------------------------
 // Controllers & Swagger
+// ---------------------------------------------------------------------
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Pulsefolio API", Version = "v1" });
 
-    // XML comments
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     c.IncludeXmlComments(xmlPath);
 
-    // Add JWT Support
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -67,11 +80,14 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-
+// ---------------------------------------------------------------------
 // AutoMapper
+// ---------------------------------------------------------------------
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
-// JWT Config
+// ---------------------------------------------------------------------
+// JWT
+// ---------------------------------------------------------------------
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 var jwt = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>()!;
 var key = Encoding.UTF8.GetBytes(jwt.Secret);
@@ -94,17 +110,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
+// ---------------------------------------------------------------------
+// Redis
+// ---------------------------------------------------------------------
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 {
     var cfg = builder.Configuration;
-    var host = cfg["Redis:Host"] ?? "localhost";
+    var host = cfg["Redis:Host"] ?? "redis"; // IMPORTANT FIX
     var port = cfg["Redis:Port"] ?? "6379";
-
     return ConnectionMultiplexer.Connect($"{host}:{port}");
 });
 
-
-    // HttpClient for AlphaVantage
+// ---------------------------------------------------------------------
+// AlphaVantage HttpClient
+// ---------------------------------------------------------------------
 builder.Services.AddHttpClient("AlphaVantageClient", client =>
 {
     client.BaseAddress = new Uri(
@@ -113,25 +132,26 @@ builder.Services.AddHttpClient("AlphaVantageClient", client =>
     client.Timeout = TimeSpan.FromSeconds(10);
 });
 
+// ---------------------------------------------------------------------
+// Market Data Provider
+// ---------------------------------------------------------------------
+builder.Services.AddScoped<FakeMarketDataProvider>();
 
+builder.Services.AddScoped<IMarketDataProvider>(sp =>
+{
+    var fake = sp.GetRequiredService<FakeMarketDataProvider>();
+    return new AlphaVantageMarketDataProvider(
+        sp.GetRequiredService<IHttpClientFactory>(),
+        sp.GetRequiredService<IPriceCacheService>(),
+        builder.Configuration,
+        fake
+    );
+});
 
-    // Register Fake as concrete type so can be injected into Alpha provider
-    builder.Services.AddScoped<FakeMarketDataProvider>(); // concrete
-    builder.Services.AddScoped<IMarketDataProvider>(sp =>
-    {
-        var fake = sp.GetRequiredService<FakeMarketDataProvider>();
-        return new AlphaVantageMarketDataProvider(
-            sp.GetRequiredService<IHttpClientFactory>(),
-            sp.GetRequiredService<IPriceCacheService>(),
-            builder.Configuration,
-            fake
-        );
-    });
-
-
+// ---------------------------------------------------------------------
+// Dependency Injection
+// ---------------------------------------------------------------------
 builder.Services.AddScoped<IPortfolioAnalyticsService, PortfolioAnalyticsService>();
-
-// Register Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
@@ -144,42 +164,33 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPortfolioService, PortfolioService>();
 builder.Services.AddScoped<IHoldingService, HoldingService>();
 builder.Services.AddScoped<ITokenService, JwtTokenService>();
-builder.Services.AddSingleton<IMessagePublisher, RabbitMqPublisher>();
-builder.Services.AddScoped<IValuationSnapshotRepository, ValuationSnapshotRepository>();
-builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
+builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
+builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 builder.Services.AddScoped<IPriceCacheService, RedisPriceCacheService>();
-// builder.Services.AddScoped<IMarketDataProvider, FakeMarketDataProvider>();
 
-// Portfolio summary service
-builder.Services.AddScoped<IPortfolioSummaryService, PortfolioSummaryService>();
+// ---------------------------------------------------------------------
+// ✔ FIX — RabbitMQ should use hostname from config (not localhost)
+// ---------------------------------------------------------------------
+builder.Services.AddSingleton<IMessagePublisher, RabbitMqPublisher>();
 
-// Valuation query service
-builder.Services.AddScoped<IValuationQueryService, ValuationQueryService>();
-
-
-// Transaction repository
-builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
-builder.Services.AddScoped<ITransactionService, TransactionService>();
-
-// Analytics service
-builder.Services.AddScoped<IPortfolioAnalyticsService, PortfolioAnalyticsService>();
-
-// SignalR and Hosted Services
+// ---------------------------------------------------------------------
+// SignalR + ValuationConsumer
+// ---------------------------------------------------------------------
 builder.Services.AddSignalR();
 builder.Services.AddHostedService<ValuationCompletedConsumer>();
 
+// ---------------------------------------------------------------------
+// REMOVE Hardcoded URL Binding (Container MUST listen on 8080)
+// ---------------------------------------------------------------------
+// Delete this line (it breaks docker networking)
+// builder.WebHost.UseUrls("http://localhost:5188");
 
-// Analytics repository and service
-builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
-builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+// ASP.NET will use the container variables:
+// ASPNETCORE_HTTP_PORTS=8080
 
-
-
-// map endpoint
-
-
-builder.WebHost.UseUrls("http://localhost:5188");
-
+// ---------------------------------------------------------------------
+// App Pipeline
+// ---------------------------------------------------------------------
 var app = builder.Build();
 
 app.UseSwagger();
@@ -188,6 +199,7 @@ app.MapHub<PortfolioHub>("/hubs/portfolio");
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
 if (!app.Environment.IsDevelopment())
@@ -195,6 +207,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
 }
 
-app.Logger.LogInformation("Now listening on: {Url}", "http://localhost:5188");
+// Log for debugging
+app.Logger.LogInformation("API running in: {Env}", app.Environment.EnvironmentName);
 
 app.Run();
