@@ -44,6 +44,19 @@ services:
       - rabbitmq
     environment:
       ASPNETCORE_ENVIRONMENT: Production
+
+      # Postgres env
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=pulsefolio_db;Username=portfoliouser;Password=SaiVittalPortfolio@20"
+
+      # RabbitMQ env
+      RabbitMQ__Host: "rabbitmq"
+      RabbitMQ__Username: "admin"
+      RabbitMQ__Password: "saiadmin123"
+
+      # Redis env
+      Redis__Host: "redis"
+      Redis__Port: "6379"
+
     ports:
       - "5188:8080"
 
@@ -59,6 +72,15 @@ services:
       - postgres
     environment:
       ASPNETCORE_ENVIRONMENT: Production
+
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=pulsefolio_db;Username=portfoliouser;Password=SaiVittalPortfolio@20"
+
+      RabbitMQ__Host: "rabbitmq"
+      RabbitMQ__Username: "admin"
+      RabbitMQ__Password: "saiadmin123"
+
+      Redis__Host: "redis"
+      Redis__Port: "6379"
 
 volumes:
   postgres_data:
