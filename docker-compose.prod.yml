@@ -44,6 +44,7 @@ services:
       - rabbitmq
     environment:
       ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: "http://0.0.0.0:8080"
 
       # Postgres env
       ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=pulsefolio_db;Username=portfoliouser;Password=SaiVittalPortfolio@20"
