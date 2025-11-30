@@ -2,7 +2,7 @@ name: Deploy to EC2
 
 on:
   push:
-    branches: [ "master" ]   # deploys when you push to master branch
+    branches: [ "main" ]   # deploys when you push to main branch
   workflow_dispatch:        # allows manual trigger in GitHub UI
 
 jobs:
