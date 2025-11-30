@@ -24,7 +24,7 @@ jobs:
 
     - name: Deploy to EC2
       run: |
-        ssh -i ~/.ssh/ec2_key ubuntu@3.108.254.168 "
+        ssh -i ~/.ssh/ec2_key ubuntu@13.127.11.2 "
           set -e
 
           cd pulsefolio
