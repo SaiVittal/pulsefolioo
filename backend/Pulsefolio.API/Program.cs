@@ -169,7 +169,7 @@ builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 builder.Services.AddScoped<IPriceCacheService, RedisPriceCacheService>();
 
 // ---------------------------------------------------------------------
-// ✔ FIX — RabbitMQ should use hostname from config (not localhost)
+// RabbitMQ should use hostname from config (not localhost)
 // ---------------------------------------------------------------------
 builder.Services.AddSingleton<IMessagePublisher, RabbitMqPublisher>();
 
@@ -180,19 +180,17 @@ builder.Services.AddSignalR();
 builder.Services.AddHostedService<ValuationCompletedConsumer>();
 
 // ---------------------------------------------------------------------
-// REMOVE Hardcoded URL Binding (Container MUST listen on 8080)
-// ---------------------------------------------------------------------
-// Delete this line (it breaks docker networking)
-// builder.WebHost.UseUrls("http://localhost:5188");
-
-// ASP.NET will use the container variables:
-// ASPNETCORE_HTTP_PORTS=8080
-
-// ---------------------------------------------------------------------
 // App Pipeline
 // ---------------------------------------------------------------------
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    
+    // This applies any pending migrations.
+    dbContext.Database.Migrate(); 
+}
 app.UseSwagger();
 app.UseSwaggerUI();
 app.MapHub<PortfolioHub>("/hubs/portfolio");
@@ -209,5 +207,7 @@ if (!app.Environment.IsDevelopment())
 
 // Log for debugging
 app.Logger.LogInformation("API running in: {Env}", app.Environment.EnvironmentName);
+
+
 
 app.Run();
