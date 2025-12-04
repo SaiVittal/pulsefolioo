@@ -1,18 +1,25 @@
 import { Layout } from "antd";
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { Sidebar } from "./Sidebar";
+import { Topbar } from "./Topbar";
 
-const { Header, Content } = Layout;
+const { Content } = Layout;
 
 export default function AppLayout() {
+  const [collapsed, setCollapsed] = useState(false);
+
   return (
     <Layout className="min-h-screen">
-      <Header className="bg-blue-600 text-white px-6 flex items-center">
-        <h1 className="text-xl font-semibold">Pulsefolio</h1>
-      </Header>
+      <Sidebar collapsed={collapsed} />
 
-      <Content className="p-6 bg-gray-50">
-        <Outlet />
-      </Content>
+      <Layout>
+        <Topbar collapsed={collapsed} setCollapsed={setCollapsed} />
+
+        <Content className="p-6 bg-gray-50 min-h-screen">
+          <Outlet />  
+        </Content>
+      </Layout>
     </Layout>
   );
 }
