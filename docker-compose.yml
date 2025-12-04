@@ -31,3 +31,35 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: saiadmin123
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Pulsefolio.API/Dockerfile
+    container_name: pulsefolio_api
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+      - rabbitmq
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+      # Database
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=pulsefolio_db;Username=portfoliouser;Password=SaiVittalPortfolio@20"
+
+      # Redis
+      Redis__Host: "redis"
+      Redis__Port: "6379"
+
+      # RabbitMQ
+      RabbitMQ__Host: "rabbitmq"
+      RabbitMQ__Username: "admin"
+      RabbitMQ__Password: "saiadmin123"
+
+      # CORS OVERRIDE (THE CORRECT LOCATION)
+      Cors__AllowedOrigins__0: "http://localhost:5173"
+      Cors__AllowedOrigins__1: "https://your-cloudfront-domain"
+
+    ports:
+      - "5188:8080"

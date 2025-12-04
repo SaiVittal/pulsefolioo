@@ -23,6 +23,24 @@ using Pulsefolio.Application.Services.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+// CORS Configuration
+// ---------------------------------------------------------------------
+
+var allowedOrigins = builder.Configuration
+    .GetSection("Cors:AllowedOrigins")
+    .Get<string[]>() ?? Array.Empty<string>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins(allowedOrigins)
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
 // ---------------------------------------------------------------------
 // Configuration Loading
 // ---------------------------------------------------------------------
@@ -207,6 +225,9 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.MapHub<PortfolioHub>("/hubs/portfolio");
 
+// Enable CORS
+app.UseCors("AllowFrontend");
+
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -216,6 +237,8 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
 }
+
+
 
 // Log for debugging
 app.Logger.LogInformation("API running in: {Env}", app.Environment.EnvironmentName);
