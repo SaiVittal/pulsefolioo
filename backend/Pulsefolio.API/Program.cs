@@ -24,6 +24,17 @@ using Pulsefolio.Application.Services.Auth;
 var builder = WebApplication.CreateBuilder(args);
 
 
+
+// ---------------------------------------------------------------------
+// Configuration Loading
+// ---------------------------------------------------------------------
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json",
+                 optional: true,
+                 reloadOnChange: true)
+    .AddEnvironmentVariables();
+
 // CORS Configuration
 // ---------------------------------------------------------------------
 
@@ -41,15 +52,6 @@ builder.Services.AddCors(options =>
               .AllowCredentials();
     });
 });
-// ---------------------------------------------------------------------
-// Configuration Loading
-// ---------------------------------------------------------------------
-builder.Configuration
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json",
-                 optional: true,
-                 reloadOnChange: true)
-    .AddEnvironmentVariables();
 
 // ---------------------------------------------------------------------
 // DB Context
