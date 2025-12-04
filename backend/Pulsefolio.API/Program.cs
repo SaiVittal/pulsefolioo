@@ -24,7 +24,7 @@ using Pulsefolio.Application.Services.Auth;
 var builder = WebApplication.CreateBuilder(args);
 
 // ---------------------------------------------------------------------
-// ✔ Correct Configuration Loading (Fixes your main issue)
+// Configuration Loading
 // ---------------------------------------------------------------------
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -149,9 +149,10 @@ builder.Services.AddScoped<IMarketDataProvider>(sp =>
 });
 
 // ---------------------------------------------------------------------
-// Dependency Injection
+// Dependency Injection (UPDATED BLOCK - IPortfolioSummaryService added)
 // ---------------------------------------------------------------------
 builder.Services.AddScoped<IPortfolioAnalyticsService, PortfolioAnalyticsService>();
+builder.Services.AddScoped<IPortfolioSummaryService, PortfolioSummaryService>(); 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
@@ -169,7 +170,7 @@ builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 builder.Services.AddScoped<IPriceCacheService, RedisPriceCacheService>();
 
 // ---------------------------------------------------------------------
-// RabbitMQ should use hostname from config (not localhost)
+// RabbitMQ should use hostname from config
 // ---------------------------------------------------------------------
 builder.Services.AddSingleton<IMessagePublisher, RabbitMqPublisher>();
 
@@ -184,13 +185,24 @@ builder.Services.AddHostedService<ValuationCompletedConsumer>();
 // ---------------------------------------------------------------------
 var app = builder.Build();
 
+// Automatic Migrations on Startup **
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     
     // This applies any pending migrations.
-    dbContext.Database.Migrate(); 
+    // NOTE: This will attempt to run migrations when the app starts, 
+    try
+    {
+        dbContext.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        app.Logger.LogError(ex, "An error occurred while applying migrations.");
+    }
 }
+
+// Global Middleware
 app.UseSwagger();
 app.UseSwaggerUI();
 app.MapHub<PortfolioHub>("/hubs/portfolio");
@@ -207,7 +219,5 @@ if (!app.Environment.IsDevelopment())
 
 // Log for debugging
 app.Logger.LogInformation("API running in: {Env}", app.Environment.EnvironmentName);
-
-
 
 app.Run();
