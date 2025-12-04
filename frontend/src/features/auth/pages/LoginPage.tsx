@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { Button, Form, Input, Card, Typography } from "antd";
 
 type FormValues = {
-  username: string;
+  email: string;
   password: string;
 };
 
@@ -15,7 +15,7 @@ export default function LoginPage() {
   const mutation = useLogin();
 
   const { register, handleSubmit } = useForm<FormValues>({
-    defaultValues: { username: "", password: "" },
+    defaultValues: { email: "", password: "" },
   });
 
   useEffect(() => {
@@ -37,8 +37,8 @@ export default function LoginPage() {
         </Typography.Title>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <Form.Item label="Username" required>
-            <Input {...register("username", { required: true })} />
+          <Form.Item label="Email" required>
+            <Input {...register("email", { required: true })} />
           </Form.Item>
 
           <Form.Item label="Password" required>
