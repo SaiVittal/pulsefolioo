@@ -7,6 +7,7 @@ import AnalyticsPage from "../features/portfolio/pages/AnalyticsPage";
 import AppLayout from "../layouts/AppLayout";
 import ProtectedRoute from "./ProtectedRoute";
 import RequireRole from "./RequireRole";
+import RegisterPage from "../features/auth/pages/RegisterPage";
 
 export const router = createBrowserRouter([
   // Public
@@ -14,6 +15,10 @@ export const router = createBrowserRouter([
     path: "/login",
     element: <LoginPage />,
   },
+  {
+    path: "/register",
+    element: <RegisterPage />,
+},
   {
     path: "/unauthorized",
     element: <UnauthorizedPage />,

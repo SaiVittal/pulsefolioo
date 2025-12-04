@@ -1,40 +1,45 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter, } from "react-router-dom";
 import AppLayout from "../layouts/AppLayout";
 import RequireRole from "../features/auth/components/RequireRole";
 import LoginPage from "../features/auth/pages/LoginPage";
 import UnauthorizedPage from "../features/auth/pages/UnauthorizedPage";
 import DashboardPage from "../features/portfolio/pages/DashboardPage";
+import ProtectedRoute from "../routes/ProtectedRoute";
+import RegisterPage from "../features/auth/pages/RegisterPage";
+import AnalyticsPage from "../features/portfolio/pages/AnalyticsPage";
 
 export const router = createBrowserRouter([
+  // Public
+  { path: "/login", element: <LoginPage /> },
+  { path: "/register", element: <RegisterPage /> },
+  { path: "/unauthorized", element: <UnauthorizedPage /> },
+
+  // Protected section WITH layout
   {
     path: "/",
-    element: <AppLayout />,
+    element: <AppLayout />, // Layout is public shell
     children: [
       {
         index: true,
         element: (
-          <RequireRole role="User">
-            <DashboardPage />
-          </RequireRole>
+          <ProtectedRoute>
+            <RequireRole role="User">
+              <DashboardPage />
+            </RequireRole>
+          </ProtectedRoute>
         ),
       },
       {
-        path: "admin",
+        path: "analytics",
         element: (
-          <RequireRole role="Admin">
-            <div>Admin Panel</div>
-          </RequireRole>
+          <ProtectedRoute>
+            <RequireRole role="Analyst">
+              <AnalyticsPage />
+            </RequireRole>
+          </ProtectedRoute>
         ),
-      },
-      {
-        path: "unauthorized",
-        element: <UnauthorizedPage />,
       },
     ],
   },
-  {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  { path: "*", element: <Navigate to="/" /> },
 ]);
+

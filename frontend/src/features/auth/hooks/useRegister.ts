@@ -2,23 +2,23 @@ import { useMutation } from "@tanstack/react-query";
 import { http } from "../../../services/http";
 import { useAuthStore } from "../../../store/auth";
 
-interface LoginPayload {
+interface RegisterPayload {
   email: string;
   password: string;
 }
 
-interface LoginResponse {
+interface RegisterResponse {
   accessToken: string;
   refreshToken: string;
   userId: string;
 }
 
-export function useLogin() {
+export function useRegister() {
   const setAuth = useAuthStore((s) => s.setAuth);
 
   return useMutation({
-    mutationFn: (data: LoginPayload) =>
-      http<LoginResponse>("/api/Auth/login", {
+    mutationFn: (data: RegisterPayload) =>
+      http<RegisterResponse>("/api/Auth/register", {
         method: "POST",
         body: JSON.stringify(data),
       }),
@@ -29,6 +29,6 @@ export function useLogin() {
         refreshToken: data.refreshToken,
         role: "User",
       });
-    }
+    },
   });
 }

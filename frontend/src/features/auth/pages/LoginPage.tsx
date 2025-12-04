@@ -1,62 +1,74 @@
-// src/features/auth/pages/LoginPage.tsx
-import { useNavigate } from "react-router-dom";
-import { useLogin } from "../hooks/useLogin";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { Button, Form, Input, Card, Typography } from "antd";
 
-type FormValues = {
+import { useLogin } from "../hooks/useLogin";
+import { Button, Form, Input, Card, Typography } from "antd";
+import { useNavigate, Link } from "react-router-dom";
+import { useEffect } from "react";
+import useForm from "antd/es/form/hooks/useForm";
+
+interface FormValues {
   email: string;
   password: string;
-};
+}
 
 export default function LoginPage() {
-  const navigate = useNavigate();
+  const [form] = useForm<FormValues>();
   const mutation = useLogin();
+  const navigate = useNavigate();
 
-  const { register, handleSubmit } = useForm<FormValues>({
-    defaultValues: { email: "", password: "" },
-  });
+  function onFinish(values: FormValues) {
+    console.log("Submitting login form", values);
+    mutation.mutate(values);
+  }
 
   useEffect(() => {
     if (mutation.isSuccess) {
-      // redirect after successful login
       navigate("/", { replace: true });
     }
   }, [mutation.isSuccess, navigate]);
 
-  async function onSubmit(values: FormValues) {
-    mutation.mutate(values);
-  }
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <Card className="w-full max-w-md p-6">
-        <Typography.Title level={3} className="text-center">
-          Sign in to Pulsefolio
+      <Card className="max-w-md w-full p-6 shadow-md">
+        <Typography.Title level={3} className="text-center mb-6">
+          Login to Pulsefolio
         </Typography.Title>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <Form.Item label="Email" required>
-            <Input {...register("email", { required: true })} />
+<Form form={form} onFinish={onFinish} layout="vertical">
+          <Form.Item name="email" label="Email" required>
+            <Input
+              placeholder="you@example.com"
+            />
           </Form.Item>
 
-          <Form.Item label="Password" required>
-            <Input.Password {...register("password", { required: true })} />
+          <Form.Item name="password" label="Password" required>
+            <Input.Password
+              placeholder="••••••••"
+            />
           </Form.Item>
 
-          <div className="flex justify-end">
-            <Button type="primary" htmlType="submit" loading={mutation.isPending}>
-              Sign in
-            </Button>
-          </div>
+          <Button
+            htmlType="submit"
+            type="primary"
+            loading={mutation.isPending}
+            className="w-full"
+          >
+            Login
+          </Button>
 
           {mutation.isError && (
-            <div className="text-red-600 mt-2">
+            <div className="text-red-600 text-sm mt-2">
               {(mutation.error as Error).message ?? "Login failed"}
             </div>
           )}
-        </form>
+
+          {/* REGISTER LINK */}
+          <div className="text-center mt-4">
+            <span className="text-gray-500">Don’t have an account? </span>
+            <Link to="/register" className="text-blue-600 hover:underline">
+              Create Account
+            </Link>
+          </div>
+        </Form>
       </Card>
     </div>
   );

@@ -1,13 +1,14 @@
 import { http } from "../../services/http";
 
 export interface LoginRequest {
-  username: string;
+  email: string;
   password: string;
 }
 
-export interface LoginResponse {
+interface LoginResponse {
   accessToken: string;
-  role: "User" | "Analyst" | "Admin";
+  refreshToken: string;
+  userId: string;
 }
 
 export async function loginApi(body: LoginRequest): Promise<LoginResponse> {
