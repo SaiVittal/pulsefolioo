@@ -16,7 +16,8 @@ export function useRefreshSession() {
       setAuth({
         accessToken: data.accessToken,
         refreshToken: data.refreshToken,
-        role: useAuthStore.getState().role!, // keep existing role
+        role: useAuthStore.getState().role!,
+        email: useAuthStore.getState().email!,
       });
     },
   });

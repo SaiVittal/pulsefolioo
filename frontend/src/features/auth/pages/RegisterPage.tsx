@@ -40,7 +40,7 @@ function onFinish(values: FormValues) {
   </Button>
 
   {mutation.isError && (
-    <p className="text-red-600">{(mutation.error as any).message}</p>
+    <p className="text-red-600">{(mutation.error as Error).message}</p>
   )}
 </Form>
       </Card>

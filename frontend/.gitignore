@@ -12,6 +12,14 @@ dist
 dist-ssr
 *.local
 
+/node_modules
+/pnpm-lock.yaml
+
+/dist
+/build
+
+**/*.d.ts
+**/*.js
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

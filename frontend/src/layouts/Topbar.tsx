@@ -1,36 +1,41 @@
-import { Layout, Button, theme } from "antd";
+import { Layout, Button } from "antd";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { useAuthStore } from "../store/auth";
+import UserAvatar from "../components/UserAvatar";
+
 
 const { Header } = Layout;
 
-export function Topbar({
-  collapsed,
-  setCollapsed,
-}: {
+interface TopbarProps {
   collapsed: boolean;
-  setCollapsed: (value: boolean) => void;
-}) {
-  const { role } = useAuthStore();
-  const { token } = theme.useToken();
+  setCollapsed: (collapsed: boolean) => void;
+  isMobile: boolean;
+}
 
+export default function Topbar({ collapsed, setCollapsed, isMobile }: TopbarProps) {
   return (
-    <Header
-      style={{
-        padding: "0 16px",
-        background: token.colorBgContainer,
-      }}
-      className="flex items-center justify-between shadow-sm"
-    >
+<Header
+  className="w-full flex items-center justify-between bg-white dark:bg-[#111] shadow-sm px-4 sticky top-0 z-10"
+  style={{ height: 64, padding: "0 24px" }}
+>
+  {/* Left */}
+  <div className="flex items-center gap-2">
+    {!isMobile && (
       <Button
         type="text"
-        onClick={() => setCollapsed(!collapsed)}
         icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+        onClick={() => setCollapsed(!collapsed)}
       />
+    )}
+    <span className="font-semibold text-lg">Dashboard</span>
+  </div>
 
-      <div className="font-medium text-gray-600">
-        Role: <span className="font-bold">{role}</span>
-      </div>
-    </Header>
+  {/* Right */}
+  <div className="flex items-center gap-3">
+    <UserAvatar />
+  </div>
+</Header>
+
+
+
   );
 }

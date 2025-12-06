@@ -8,23 +8,24 @@ import AppLayout from "../layouts/AppLayout";
 import ProtectedRoute from "./ProtectedRoute";
 import RequireRole from "./RequireRole";
 import RegisterPage from "../features/auth/pages/RegisterPage";
+import RouterErrorPage from "../components/RouterErrorPage";
 
 export const router = createBrowserRouter([
-  // Public
   {
     path: "/login",
     element: <LoginPage />,
+    errorElement: <RouterErrorPage />,
   },
   {
     path: "/register",
     element: <RegisterPage />,
-},
+    errorElement: <RouterErrorPage />,
+  },
   {
     path: "/unauthorized",
     element: <UnauthorizedPage />,
+    errorElement: <RouterErrorPage />,
   },
-
-  // Protected + Layout
   {
     path: "/",
     element: (
@@ -32,7 +33,7 @@ export const router = createBrowserRouter([
         <AppLayout />
       </ProtectedRoute>
     ),
-
+    errorElement: <RouterErrorPage />,
     children: [
       {
         index: true,
@@ -49,7 +50,8 @@ export const router = createBrowserRouter([
             <AnalyticsPage />
           </RequireRole>
         ),
-      },
-    ],
-  },
+      }
+    ]
+  }
 ]);
+

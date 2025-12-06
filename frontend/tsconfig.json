@@ -2,18 +2,21 @@
   "compilerOptions": {
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-
+    "outDir": "./lib",
+    "rootDir": "./src",
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": true, 
     "noUnusedParameters": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
     "noFallthroughCasesInSwitch": true,
-    "exactOptionalPropertyTypes": true,
+    "exactOptionalPropertyTypes": false,
     "noUncheckedIndexedAccess": true,
     "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+
 
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",

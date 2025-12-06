@@ -6,7 +6,8 @@ interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
   role: UserRole | null;
-  setAuth: (data: { accessToken: string; refreshToken: string; role: UserRole }) => void;
+  email: string | null;
+  setAuth: (data: { accessToken: string; refreshToken: string; role: UserRole, email: string }) => void;
   clearAuth: () => void;
 }
 
@@ -14,13 +15,14 @@ export const useAuthStore = create<AuthState>((set) => ({
   accessToken: localStorage.getItem("pf_access"),
   refreshToken: localStorage.getItem("pf_refresh"),
   role: (localStorage.getItem("pf_role") as UserRole) ?? null,
-
-  setAuth: ({ accessToken, refreshToken, role }) =>
+  email: localStorage.getItem("pf_email"),
+  setAuth: ({ accessToken, refreshToken, role, email }) =>
     set(() => {
       localStorage.setItem("pf_access", accessToken);
       localStorage.setItem("pf_refresh", refreshToken);
       localStorage.setItem("pf_role", role);
-      return { accessToken, refreshToken, role };
+      localStorage.setItem("pf_email", email);
+      return { accessToken, refreshToken, role, email };
     }),
 
   clearAuth: () =>

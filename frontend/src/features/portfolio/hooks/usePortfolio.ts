@@ -1,9 +1,9 @@
+import { getMyPortfolios, } from './../api';
 import { useQuery } from "@tanstack/react-query";
-import { getPortfolio } from "../api";
 
 export function usePortfolio() {
   return useQuery({
     queryKey: ["portfolio"],
-    queryFn: getPortfolio,
+    queryFn: getMyPortfolios,
   });
 }

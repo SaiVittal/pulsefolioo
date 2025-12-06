@@ -28,6 +28,7 @@ export function useRegister() {
         accessToken: data.accessToken,
         refreshToken: data.refreshToken,
         role: "User",
+        email: data.userId, // backend must return email soon
       });
     },
   });

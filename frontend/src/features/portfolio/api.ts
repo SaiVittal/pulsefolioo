@@ -1,10 +1,9 @@
 import { apiGet } from "../../services/httpMethods";
 
 export interface PortfolioResponse {
-  id: number;
+  id: string;
   name: string;
-  value: number;
 }
 
-export const getPortfolio = () =>
-  apiGet<PortfolioResponse[]>("/portfolio");
+export const getMyPortfolios = () =>
+  apiGet<PortfolioResponse[]>("/api/Portfolio/user");

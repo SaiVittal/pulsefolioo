@@ -8,7 +8,7 @@ export default function AnalyticsPage() {
   return (
     <div>
       {data?.map((p) => (
-        <div key={p.id}>{p.name} — {p.value}</div>
+        <div key={p.id}>{p.name}</div>
       ))}
     </div>
   );
