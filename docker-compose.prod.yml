@@ -53,6 +53,10 @@ services:
       RabbitMQ__Host: "rabbitmq"
       RabbitMQ__Username: "admin"
       RabbitMQ__Password: "saiadmin123"
+      Cors__AllowedOrigins__0: "http://localhost:5173"
+      Cors__AllowedOrigins__1: "http://13.233.37.21:5173"
+      Cors__AllowedOrigins__2: "http://13.233.37.21"
+      Cors__AllowedOrigins__3: "https://your-cloudfront-domain"
 
       # Redis env
       Redis__Host: "redis"

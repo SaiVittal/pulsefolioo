@@ -232,7 +232,7 @@ app.MapHub<PortfolioHub>("/hubs/portfolio");
 
 // Enable CORS
 app.UseCors("AllowFrontend");
-
+app.UseMiddleware<ApiExceptionMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 
