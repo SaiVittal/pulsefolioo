@@ -46,12 +46,15 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins(allowedOrigins)
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+        policy.SetIsOriginAllowed(_ => true)
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
+
     });
 });
+
+
 
 // ---------------------------------------------------------------------
 // DB Context
@@ -244,5 +247,6 @@ if (!app.Environment.IsDevelopment())
 
 // Log for debugging
 app.Logger.LogInformation("API running in: {Env}", app.Environment.EnvironmentName);
+app.Logger.LogInformation("Loaded CORS origins: {Origins}", string.Join(", ", allowedOrigins));
 
 app.Run();
