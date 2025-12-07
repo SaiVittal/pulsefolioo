@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { http } from "../../../services/http";
+import { apiPost, apiGet } from "../../../services/httpMethods";
 import { useAuthStore } from "../../../store/auth";
 
 interface LoginPayload {
@@ -13,25 +13,27 @@ interface LoginResponse {
   userId: string;
 }
 
+interface MeResponse {
+  userId: string;
+  email: string;
+  role?: string;
+}
+
 export function useLogin() {
   const setAuth = useAuthStore((s) => s.setAuth);
 
   return useMutation({
-    mutationFn: (data: LoginPayload) =>
-      http<{ accessToken: string; refreshToken: string; userId: string }>(
-        "/api/Auth/login",
-        {
-          method: "POST",
-          body: JSON.stringify(data),
-        }
-      ),
-    onSuccess: async (data: LoginResponse) => {
-      const me = await http<{ userId: string; email: string }>("/api/Auth/me");
+    mutationFn: (payload: LoginPayload) =>
+      apiPost<LoginResponse>("/api/Auth/login", payload),
+
+    onSuccess: async (loginData) => {
+      // Fetch profile after login
+      const me = await apiGet<MeResponse>("/api/Auth/me");
 
       setAuth({
-        accessToken: data.accessToken,
-        refreshToken: data.refreshToken,
-        role: "User", // backend must add role soon
+        accessToken: loginData.accessToken,
+        refreshToken: loginData.refreshToken,
+        role: (me.role as any) ?? "User", // until backend adds role
         email: me.email,
       });
     },

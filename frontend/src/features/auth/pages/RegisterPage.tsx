@@ -1,49 +1,55 @@
+import AuthLayout from "../../../layouts/AuthLayout";
+import { Form, Input, Typography } from "antd";
+import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import { useRegister } from "../hooks/useRegister";
-import { Button, Input, Card, Typography, Form } from "antd";
-import { useForm } from "antd/es/form/Form";
+import AppButton from "../../../components/ui/AppButton";
 import { useNavigate } from "react-router-dom";
 
-interface FormValues {
-  email: string;
-  password: string;
-}
-
 export default function RegisterPage() {
-  const navigate = useNavigate();
   const mutation = useRegister();
+  const navigate = useNavigate();
 
-  const [form] = useForm<FormValues>();
-
-function onFinish(values: FormValues) {
-  console.log("Submitting register form", values);
-  mutation.mutate(values, {
-    onSuccess: () => navigate("/login", { replace: true }),
-  });
-}
+  function onFinish(values: { email: string; password: string }) {
+    mutation.mutate(values, {
+      onSuccess: () => navigate("/login", { replace: true }),
+    });
+  }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50">
-      <Card className="w-full max-w-md p-6">
+    <AuthLayout>
+      <div className="text-center mb-6">
         <Typography.Title level={3}>Create Account</Typography.Title>
+        <p className="text-[--colorTextSecondary]">
+          Start managing your portfolio
+        </p>
+      </div>
 
-<Form form={form} onFinish={onFinish} layout="vertical">
-  <Form.Item name="email" label="Email" rules={[{ required: true }]}>
-    <Input />
-  </Form.Item>
+      <Form layout="vertical" onFinish={onFinish}>
+        <Form.Item name="email" label="Email" rules={[{ required: true }]}>
+          <Input
+            prefix={<MailOutlined />}
+            placeholder="you@example.com"
+            size="large"
+          />
+        </Form.Item>
 
-  <Form.Item name="password" label="Password" rules={[{ required: true }]}>
-    <Input.Password />
-  </Form.Item>
+        <Form.Item name="password" label="Password" rules={[{ required: true }]}>
+          <Input.Password
+            prefix={<LockOutlined />}
+            placeholder="••••••"
+            size="large"
+          />
+        </Form.Item>
 
-  <Button type="primary" htmlType="submit" loading={mutation.isPending} className="w-full">
-    Register
-  </Button>
-
-  {mutation.isError && (
-    <p className="text-red-600">{(mutation.error as Error).message}</p>
-  )}
-</Form>
-      </Card>
-    </div>
+        <AppButton
+          kind="primary"
+          htmlType="submit"
+          block
+          disabled={mutation.isPending}
+        >
+          {mutation.isPending ? "Creating..." : "Register"}
+        </AppButton>
+      </Form>
+    </AuthLayout>
   );
 }

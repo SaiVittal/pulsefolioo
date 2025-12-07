@@ -1,30 +1,30 @@
-
-
-import { ReactNode } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { ConfigProvider } from "antd";
+import { ConfigProvider, theme } from "antd";
 import { queryClient } from "../services/queryClient";
 import { ThemeProvider, useTheme } from "../context/ThemeContext";
 
-// 1. Create a component to apply the theme from context
-function ThemeWrapper({ children }: { children: ReactNode }) {
-  const { antdAlgorithm } = useTheme();
-  
+const { defaultAlgorithm, darkAlgorithm } = theme;
+
+export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
-    <ConfigProvider theme={{ algorithm: antdAlgorithm }}>
-      <QueryClientProvider client={queryClient}>
-        {/* <SessionInitializer /> */}
-        {children}
-      </QueryClientProvider>
-    </ConfigProvider>
+    <ThemeProvider>
+      <InnerProviders>{children}</InnerProviders>
+    </ThemeProvider>
   );
 }
 
-// 2. The main AppProviders component
-export function AppProviders({ children }: { children: ReactNode }) {
+function InnerProviders({ children }: { children: React.ReactNode }) {
+  const { themeMode } = useTheme();
+
   return (
-    <ThemeProvider>
-      <ThemeWrapper>{children}</ThemeWrapper>
-    </ThemeProvider>
+    <ConfigProvider
+      theme={{
+        algorithm: themeMode === "light" ? defaultAlgorithm : darkAlgorithm,
+      }}
+    >
+      <QueryClientProvider client={queryClient}>
+        {children}
+      </QueryClientProvider>
+    </ConfigProvider>
   );
 }

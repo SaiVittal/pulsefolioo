@@ -1,45 +1,87 @@
-import { createBrowserRouter, } from "react-router-dom";
-import AppLayout from "../layouts/AppLayout";
-import RequireRole from "../features/auth/components/RequireRole";
+import { Suspense } from "react";
+import { LoaderSuspense } from "../components/ui/LoaderSuspense";
+import { createBrowserRouter } from "react-router-dom";
 import LoginPage from "../features/auth/pages/LoginPage";
-import UnauthorizedPage from "../features/auth/pages/UnauthorizedPage";
-import DashboardPage from "../features/portfolio/pages/DashboardPage";
-import ProtectedRoute from "../routes/ProtectedRoute";
 import RegisterPage from "../features/auth/pages/RegisterPage";
+import UnauthorizedPage from "../features/auth/pages/UnauthorizedPage";
 import AnalyticsPage from "../features/portfolio/pages/AnalyticsPage";
+import DashboardPage from "../features/portfolio/pages/DashboardPage";
+import { AppLayout } from "../layouts";
+import ProtectedRoute from "../routes/ProtectedRoute";
+import RequireRole from "../routes/RequireRole";
 
 export const router = createBrowserRouter([
-  // Public
   { path: "/login", element: <LoginPage /> },
   { path: "/register", element: <RegisterPage /> },
   { path: "/unauthorized", element: <UnauthorizedPage /> },
 
-  // Protected section WITH layout
   {
     path: "/",
-    element: <AppLayout />, // Layout is public shell
+    element: <AppLayout />,
     children: [
       {
         index: true,
         element: (
-          <ProtectedRoute>
-            <RequireRole role="User">
-              <DashboardPage />
-            </RequireRole>
-          </ProtectedRoute>
+          <Suspense fallback={<LoaderSuspense />}>
+            <ProtectedRoute>
+              <RequireRole role="User">
+                <DashboardPage />
+              </RequireRole>
+            </ProtectedRoute>
+          </Suspense>
         ),
       },
       {
         path: "analytics",
         element: (
-          <ProtectedRoute>
-            <RequireRole role="Analyst">
-              <AnalyticsPage />
-            </RequireRole>
-          </ProtectedRoute>
+          <Suspense fallback={<LoaderSuspense />}>
+            <ProtectedRoute>
+              <RequireRole role="Analyst">
+                <AnalyticsPage />
+              </RequireRole>
+            </ProtectedRoute>
+          </Suspense>
         ),
       },
+      // Transactions
+      // {
+      //   path: "transactions",
+      //   element: (
+      //     <Suspense fallback={<LoaderSuspense />}>
+      //       <ProtectedRoute>
+      //         <RequireRole role="User">
+      //           <TransactionsPage />
+      //         </RequireRole>
+      //       </ProtectedRoute>
+      //     </Suspense>
+      //   ),
+      // },
+      // // Settings
+      // {
+      //   path: "settings",
+      //   element: (
+      //     <Suspense fallback={<LoaderSuspense />}>
+      //       <ProtectedRoute>
+      //         <RequireRole role="User">
+      //           <SettingsPage />
+      //         </RequireRole>
+      //       </ProtectedRoute>
+      //     </Suspense>
+      //   ),
+      // },
+      // // Profile
+      // {
+      //   path: "profile",
+      //   element: (
+      //     <Suspense fallback={<LoaderSuspense />}>
+      //       <ProtectedRoute>
+      //         <RequireRole role="User">
+      //           <ProfilePage />
+      //         </RequireRole>
+      //       </ProtectedRoute>
+      //     </Suspense>
+      //   ),
+      // },
     ],
   },
 ]);
-

@@ -1,4 +1,4 @@
-import { Divider, Layout, Menu } from "antd";
+import { Divider, Layout, Menu, Tooltip } from "antd";
 import {
   LineChartOutlined,
   DashboardOutlined,
@@ -9,6 +9,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { MenuItemType } from "antd/es/menu/interface";
 import { useAuthStore } from "../store/auth";
+// import { motion } from "framer-motion";
 
 const { Sider } = Layout;
 
@@ -27,9 +28,9 @@ export default function Sidebar({
 }: SidebarProps) {
   const nav = useNavigate();
   const location = useLocation();
-  const clearAuth = useAuthStore((s: { clearAuth: () => void }) => s.clearAuth);
+  const clearAuth = useAuthStore((s) => s.clearAuth);
 
-  const items: MenuItemType[] = [
+  const mainItems: MenuItemType[] = [
     {
       key: "/",
       icon: <DashboardOutlined />,
@@ -48,16 +49,15 @@ export default function Sidebar({
       label: "Transactions",
       onClick: () => nav("/transactions"),
     },
+  ];
 
-    { key: "divider-1", label: "divider", icon: <Divider /> },
-
+  const secondaryItems: MenuItemType[] = [
     {
       key: "/settings",
       icon: <SettingOutlined />,
       label: "Settings",
       onClick: () => nav("/settings"),
     },
-
     {
       key: "logout",
       icon: <LogoutOutlined />,
@@ -70,6 +70,18 @@ export default function Sidebar({
     },
   ];
 
+  // helper to add tooltip when collapsed
+  const withTooltip = (item: MenuItemType): MenuItemType => ({
+    ...item,
+    label: collapsed ? (
+      <Tooltip title={item.label} placement="right">
+        <span>{item.label}</span>
+      </Tooltip>
+    ) : (
+      item.label
+    ),
+  });
+
   return (
     <Sider
       collapsible
@@ -77,18 +89,82 @@ export default function Sidebar({
       onCollapse={setCollapsed}
       width={width}
       collapsedWidth={collapsedWidth}
-      className="shadow-lg bg-[#001529]"
-      style={{ position: "fixed", height: "100vh", left: 0 }}
+      theme="dark"
+      className="shadow-lg"
+      style={{
+        position: "fixed",
+        height: "100vh",
+        left: 0,
+        background: "#001529",
+        transition: "all 0.25s ease",
+      }}
     >
-      <div className="text-white text-lg font-bold px-4 py-4">
-        {collapsed ? "PF" : "Pulsefolio"}
-      </div>
+      {/* BRAND HEADER */}
+<div
+  style={{
+    height: 64,
+    display: "flex",
+    alignItems: "center",
+    paddingInline: 16,
+    gap: 12,
+    background: "#0b132b",
+    borderBottom: "1px solid rgba(255,255,255,0.08)",
+    lineHeight: 1,
+  }}
+>
+  {/* Logo bubble */}
+  <div
+    style={{
+      width: 34,
+      height: 34,
+      borderRadius: "50%",
+      background: "#1d4ed8",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      color: "white",
+      fontSize: 16,
+      fontWeight: 600,
+      flexShrink: 0,
+    }}
+  >
+    P
+  </div>
 
+  {/* brand text */}
+  {!collapsed && (
+    <div
+      style={{
+        color: "white",
+        fontSize: 18,
+        fontWeight: 600,
+        marginTop: 2, // subtle baseline alignment
+      }}
+    >
+      Pulsefolio
+    </div>
+  )}
+</div>
+
+
+      {/* Main navigation */}
       <Menu
         theme="dark"
         mode="inline"
-        items={items}
         selectedKeys={[location.pathname]}
+        items={mainItems.map(withTooltip)}
+        style={{ marginTop: 12, borderInline: "none" }}
+      />
+
+      <Divider style={{ margin: "12px 0", borderColor: "rgba(255,255,255,0.08)" }} />
+
+      {/* Secondary navigation */}
+      <Menu
+        theme="dark"
+        mode="inline"
+        selectedKeys={[location.pathname]}
+        items={secondaryItems.map(withTooltip)}
+        style={{ borderInline: "none" }}
       />
     </Sider>
   );

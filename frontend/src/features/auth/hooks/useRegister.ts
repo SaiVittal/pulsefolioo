@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { http } from "../../../services/http";
+import { apiPost, apiGet } from "../../../services/httpMethods";
 import { useAuthStore } from "../../../store/auth";
 
 interface RegisterPayload {
@@ -13,22 +13,27 @@ interface RegisterResponse {
   userId: string;
 }
 
+interface MeResponse {
+  userId: string;
+  email: string;
+  role?: string;
+}
+
 export function useRegister() {
   const setAuth = useAuthStore((s) => s.setAuth);
 
   return useMutation({
-    mutationFn: (data: RegisterPayload) =>
-      http<RegisterResponse>("/api/Auth/register", {
-        method: "POST",
-        body: JSON.stringify(data),
-      }),
+    mutationFn: (payload: RegisterPayload) =>
+      apiPost<RegisterResponse>("/api/Auth/register", payload),
 
-    onSuccess: (data) => {
+    onSuccess: async (registerData) => {
+      const me = await apiGet<MeResponse>("/api/Auth/me");
+
       setAuth({
-        accessToken: data.accessToken,
-        refreshToken: data.refreshToken,
-        role: "User",
-        email: data.userId, // backend must return email soon
+        accessToken: registerData.accessToken,
+        refreshToken: registerData.refreshToken,
+        role: (me.role as any) ?? "User",
+        email: me.email,
       });
     },
   });

@@ -1,15 +1,25 @@
-import { usePortfolio } from "../hooks/usePortfolio";
+import LayoutContainer from "../../../components/ui/LayoutContainer";
+import PageTransition from "../../../components/ui/PageTransition";
+import { Typography } from "antd";
+import { useTop10Analytics } from "../hooks/useAnalytics";
 
 export default function AnalyticsPage() {
-  const { data, isLoading } = usePortfolio();
-
-  if (isLoading) return <div>Loading...</div>;
+  const { data, isLoading } = useTop10Analytics();
 
   return (
-    <div>
-      {data?.map((p) => (
-        <div key={p.id}>{p.name}</div>
-      ))}
-    </div>
+    <PageTransition>
+      <LayoutContainer>
+        <Typography.Title level={3}>Analytics</Typography.Title>
+        <Typography.Paragraph type="secondary">
+          Top 10 positions by P&L.
+        </Typography.Paragraph>
+
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <pre>{JSON.stringify(data, null, 2)}</pre>
+        )}
+      </LayoutContainer>
+    </PageTransition>
   );
 }
