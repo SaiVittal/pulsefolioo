@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Pulsefolio.Application.Interfaces.Services;
 using Pulsefolio.Application.DTOs.Auth;
 using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 /// <summary>
 /// Controller for handling user authentication operations including registration, login, and token refresh.
@@ -56,8 +57,13 @@ public class AuthController : ControllerBase
     [HttpGet("me")]
     public IActionResult Me()
     {
-        var userId = User.FindFirst("uid")?.Value;
-        var email = User.FindFirst(ClaimTypes.Email)?.Value;
+        var userId =
+            User.FindFirst("uid")?.Value ??
+            User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+        var email =
+            User.FindFirst("email")?.Value ??
+            User.FindFirst(ClaimTypes.Email)?.Value;
 
         return Ok(new
         {
