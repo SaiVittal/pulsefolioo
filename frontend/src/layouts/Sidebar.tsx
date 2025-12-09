@@ -91,12 +91,14 @@ export default function Sidebar({
       collapsedWidth={collapsedWidth}
       theme="dark"
       className="shadow-lg"
-      style={{
-        position: "fixed",
+    style={{
+        overflow: "auto",
         height: "100vh",
+        position: "fixed", 
         left: 0,
-        background: "#001529",
-        transition: "all 0.25s ease",
+        top: 0,
+        bottom: 0,
+        zIndex: 20, // Must be higher than the Topbar's z-index (10)
       }}
     >
       {/* BRAND HEADER */}

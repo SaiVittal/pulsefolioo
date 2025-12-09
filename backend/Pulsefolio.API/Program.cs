@@ -174,6 +174,9 @@ builder.Services.AddScoped<IMarketDataProvider>(sp =>
 // ---------------------------------------------------------------------
 // Dependency Injection (UPDATED BLOCK - IPortfolioSummaryService added)
 // ---------------------------------------------------------------------
+builder.Services.AddScoped<IDashboardAggregationService, DashboardAggregationService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<IValuationQueryService, ValuationQueryService>();
 builder.Services.AddScoped<IPortfolioAnalyticsService, PortfolioAnalyticsService>();
 builder.Services.AddScoped<IPortfolioSummaryService, PortfolioSummaryService>(); 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -191,6 +194,7 @@ builder.Services.AddScoped<ITokenService, JwtTokenService>();
 builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 builder.Services.AddScoped<IPriceCacheService, RedisPriceCacheService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 // ---------------------------------------------------------------------
 // RabbitMQ should use hostname from config
@@ -247,6 +251,5 @@ if (!app.Environment.IsDevelopment())
 
 // Log for debugging
 app.Logger.LogInformation("API running in: {Env}", app.Environment.EnvironmentName);
-app.Logger.LogInformation("Loaded CORS origins: {Origins}", string.Join(", ", allowedOrigins));
 
 app.Run();

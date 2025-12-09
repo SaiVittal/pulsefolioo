@@ -13,18 +13,23 @@ namespace Pulsefolio.API.Controllers
     public class DashboardController : ControllerBase
     {
         private readonly IDashboardService _dashboardService;
+        private readonly IDashboardAggregationService _dashboardAggService;
+
         private readonly IPortfolioService _portfolios;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DashboardController"/> class.
         /// </summary>
         /// <param name="dashboardService">The dashboard service used to retrieve portfolio summaries.</param>
+        /// <param name="dashboardAggService">The dashboard aggregation service used to retrieve full dashboard summaries.</param>
         /// <param name="portfolios">The portfolio service used to manage user portfolios.</param>
         public DashboardController(
             IDashboardService dashboardService,
+            IDashboardAggregationService dashboardAggService,
             IPortfolioService portfolios)
         {
             _dashboardService = dashboardService;
+            _dashboardAggService = dashboardAggService;
             _portfolios = portfolios;
         }
 
@@ -43,6 +48,22 @@ namespace Pulsefolio.API.Controllers
                 return Forbid();
 
             var result = await _dashboardService.GetDashboardAsync(portfolioId);
+
+            return Ok(result);
+        }
+
+         /// <summary>
+        /// Retrieves the dashboard summary for a specific portfolio.
+        /// </summary>
+        /// <param name="portfolioId">The unique identifier of the portfolio.</param>
+        /// <returns>An <see cref="IActionResult"/> containing the full dashboard summary.</returns>
+
+         [HttpGet("{portfolioId}/full")]
+        public async Task<IActionResult> GetFullDashboard(Guid portfolioId)
+        {
+            var userId = Guid.Parse(User.FindFirst("sub")!.Value);
+
+            var result = await _dashboardAggService.GetFullDashboardAsync(portfolioId, userId);
 
             return Ok(result);
         }
