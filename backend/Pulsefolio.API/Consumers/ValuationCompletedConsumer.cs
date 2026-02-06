@@ -37,13 +37,27 @@ namespace Pulsefolio.Workers
             _logger = logger;
             _hub = hub;
 
-            var factory = new ConnectionFactory
+            var rabbitUrl = Environment.GetEnvironmentVariable("RABBITMQ_URL");
+            ConnectionFactory factory;
+
+            if (!string.IsNullOrEmpty(rabbitUrl))
             {
-                HostName = cfg["RabbitMQ:Host"] ?? "localhost",
-                UserName = cfg["RabbitMQ:Username"] ?? "guest",
-                Password = cfg["RabbitMQ:Password"] ?? "guest",
-                DispatchConsumersAsync = true
-            };
+                factory = new ConnectionFactory
+                {
+                    Uri = new Uri(rabbitUrl),
+                    DispatchConsumersAsync = true
+                };
+            }
+            else
+            {
+                factory = new ConnectionFactory
+                {
+                    HostName = cfg["RabbitMQ:Host"] ?? "localhost",
+                    UserName = cfg["RabbitMQ:Username"] ?? "guest",
+                    Password = cfg["RabbitMQ:Password"] ?? "guest",
+                    DispatchConsumersAsync = true
+                };
+            }
 
             _conn = factory.CreateConnection();
             _ch = _conn.CreateModel();

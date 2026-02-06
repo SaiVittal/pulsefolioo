@@ -61,11 +61,54 @@ builder.Services.AddCors(options =>
 // ---------------------------------------------------------------------
 // DB Context
 // ---------------------------------------------------------------------
-var connectionString =
-    builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException(
-        "Connection string 'DefaultConnection' not found."
-    );
+
+// Helper to parse DATABASE_URL (postgres://user:pass@host:port/db) from cloud providers
+string GetConnectionString(IConfiguration configuration)
+{
+    var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+    if (string.IsNullOrEmpty(databaseUrl))
+    {
+        return configuration.GetConnectionString("DefaultConnection") 
+            ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+    }
+
+    try 
+    {
+        var databaseUri = new Uri(databaseUrl);
+        var userInfo = databaseUri.UserInfo.Split(':');
+        
+        return $"Host={databaseUri.Host};" +
+               $"Port={databaseUri.Port};" +
+               $"Database={databaseUri.AbsolutePath.TrimStart('/')};" +
+               $"Username={userInfo[0]};" +
+               $"Password={userInfo[1]};" +
+               $"SslMode=Require;Trust Server Certificate=true";
+    }
+    catch
+    {
+        // Fallback or if URL format is different (e.g. regular connection string)
+        return databaseUrl;
+    }
+}
+
+var connectionString = GetConnectionString(builder.Configuration);
+
+// Redis Configuration Helper
+string GetRedisConnectionString(IConfiguration configuration)
+{
+    var redisUrl = Environment.GetEnvironmentVariable("REDIS_URL");
+    if (string.IsNullOrEmpty(redisUrl))
+    {
+        var host = configuration["Redis:Host"] ?? "localhost";
+        var port = configuration["Redis:Port"] ?? "6379";
+        return $"{host}:{port}";
+    }
+    
+    // Some providers give redis://user:pass@host:port
+    return redisUrl.Replace("redis://", "").Replace("rediss://", "");
+}
+
+var redisConn = GetRedisConnectionString(builder.Configuration);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(
