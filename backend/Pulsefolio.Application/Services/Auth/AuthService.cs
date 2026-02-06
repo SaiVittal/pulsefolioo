@@ -5,7 +5,8 @@ using Pulsefolio.Application.Interfaces.Repositories;
 using Pulsefolio.Application.Common.Exceptions;
 using Pulsefolio.Domain.Entities;
 using Pulsefolio.Application.Interfaces.Services; 
-using Pulsefolio.Application.Common.Security;  
+using Pulsefolio.Application.Common.Security;
+
 namespace Pulsefolio.Application.Services.Auth
 {
     public class AuthService : IAuthService
@@ -40,11 +41,13 @@ namespace Pulsefolio.Application.Services.Auth
                 Email = dto.Email,
                 PasswordHash = _hasher.Hash(dto.Password),
                 CreatedAt = DateTime.UtcNow
+                // Role defaults to User via entity default
             };
 
             await _userRepo.AddAsync(user);
 
-            var (access, expiresAt) = _tokenService.CreateAccessTokenWithExpiry(user.Id, user.Email);
+            var roleString = user.Role.ToString();
+            var (access, expiresAt) = _tokenService.CreateAccessTokenWithExpiry(user.Id, user.Email, roleString);
             var refresh = _tokenService.CreateRefreshToken();
 
             var rt = new RefreshToken
@@ -62,7 +65,9 @@ namespace Pulsefolio.Application.Services.Auth
             {
                 AccessToken = access,
                 RefreshToken = refresh,
-                UserId = user.Id
+                UserId = user.Id,
+                Email = user.Email,
+                Role = roleString
             };
         }
 
@@ -73,7 +78,8 @@ namespace Pulsefolio.Application.Services.Auth
 
             if (!_hasher.Verify(dto.Password, user.PasswordHash)) throw new UnauthorizedException("Invalid credentials.");
 
-            var (access, expiresAt) = _tokenService.CreateAccessTokenWithExpiry(user.Id, user.Email);
+            var roleString = user.Role.ToString();
+            var (access, expiresAt) = _tokenService.CreateAccessTokenWithExpiry(user.Id, user.Email, roleString);
             var refresh = _tokenService.CreateRefreshToken();
 
             // optionally invalidate old tokens for user
@@ -93,20 +99,14 @@ namespace Pulsefolio.Application.Services.Auth
             {
                 AccessToken = access,
                 RefreshToken = refresh,
-                UserId = user.Id
+                UserId = user.Id,
+                Email = user.Email,
+                Role = roleString
             };
         }
 
         public async Task<AuthResponseDto> RefreshTokenAsync(string refreshToken)
         {
-            // Find token and user
-            // Implementation depends on whether token stores user id in request or not.
-            // Here, we search by token
-            // For security: ensure token is not revoked and not expired.
-            // We'll assume RefreshTokenRepository has GetValidTokenAsync(Guid, token) but we need user id.
-            // So repository may need GetByTokenAsync - we will use GetValidTokenAsync by searching all tokens (alternative).
-            // For now, implement a basic GetByToken in repository or you can add method. Here I will assume GetByToken token exists.
-
             var rt = await _rtRepo.GetByTokenAsync(refreshToken);
             if (rt == null || rt.IsRevoked || rt.ExpiresAt <= DateTime.UtcNow)
                 throw new UnauthorizedException("Invalid refresh token.");
@@ -115,7 +115,8 @@ namespace Pulsefolio.Application.Services.Auth
             if (user == null) throw new NotFoundException("User not found for refresh token.");
 
             // create new access + refresh token
-            var (access, expiresAt) = _tokenService.CreateAccessTokenWithExpiry(user.Id, user.Email);
+            var roleString = user.Role.ToString();
+            var (access, expiresAt) = _tokenService.CreateAccessTokenWithExpiry(user.Id, user.Email, roleString);
             var newRefresh = _tokenService.CreateRefreshToken();
 
             // revoke old token and save new
@@ -136,8 +137,11 @@ namespace Pulsefolio.Application.Services.Auth
             {
                 AccessToken = access,
                 RefreshToken = newRefresh,
-                UserId = user.Id
+                UserId = user.Id,
+                Email = user.Email,
+                Role = roleString
             };
         }
     }
 }
+

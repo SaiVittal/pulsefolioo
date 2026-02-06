@@ -2,7 +2,7 @@ import { Card } from "antd";
 import EChart from "../../../components/charts/EChart";
 
 export default function PortfolioPie() {
-  const option = {
+  const option: any = {
     tooltip: { trigger: "item" },
     legend: { orient: "horizontal", top: "bottom" },
     series: [

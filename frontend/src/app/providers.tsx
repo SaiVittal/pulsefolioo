@@ -1,9 +1,9 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ConfigProvider, theme } from "antd";
 import { queryClient } from "../services/queryClient";
-import { ThemeProvider, useTheme } from "../context/ThemeContext";
+import { ThemeProvider } from "../context/ThemeContext";
 
-const { defaultAlgorithm, darkAlgorithm } = theme;
+const { darkAlgorithm } = theme;
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
@@ -14,12 +14,12 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
 }
 
 function InnerProviders({ children }: { children: React.ReactNode }) {
-  const { themeMode } = useTheme();
+  // const { themeMode } = useTheme();
 
   return (
     <ConfigProvider
       theme={{
-        algorithm: themeMode === "light" ? defaultAlgorithm : darkAlgorithm,
+        algorithm: darkAlgorithm, // Enforce dark mode for premium feel
       }}
     >
       <QueryClientProvider client={queryClient}>

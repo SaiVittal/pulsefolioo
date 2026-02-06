@@ -27,7 +27,7 @@ namespace Pulsefolio.API.Controllers
         /// </summary>
         /// <param name="portfolioId">The unique identifier of the portfolio.</param>
         /// <returns>An IActionResult containing the portfolio PNL data.</returns>
-        [Authorize]
+        [Authorize(Policy = "RequireUser")]
         [HttpGet("{portfolioId}")]
         public async Task<IActionResult> Get(Guid portfolioId)
         {

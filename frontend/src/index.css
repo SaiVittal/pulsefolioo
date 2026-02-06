@@ -1,10 +1,13 @@
 @import "tailwindcss";
 
 /* --- Global baseline (safe for AntD + Tailwind) --- */
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   margin: 0;
   padding: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 /* Smooth font rendering */
@@ -12,18 +15,215 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-/* Transition for theme change */
 
-html, body, .ant-layout, .ant-card, .ant-layout-header, .ant-layout-sider {
+/* Transition for theme change */
+html,
+body,
+.ant-layout,
+.ant-card,
+.ant-layout-header,
+.ant-layout-sider {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   - Mobile: < 768px
+   - Tablet: 768px - 1279px  
+   - Desktop: >= 1280px
+   ============================================ */
+
+/* Responsive Container */
+.responsive-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+@media (min-width: 768px) {
+  .responsive-container {
+    padding: 0 24px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .responsive-container {
+    max-width: 1400px;
+    padding: 0 32px;
+  }
+}
+
+/* Responsive Grid System */
+.responsive-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .responsive-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .responsive-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+}
+
+/* Responsive Grid for Stats Cards */
+.stats-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+}
+
+/* Responsive Two Column Layout */
+.two-column-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 1024px) {
+  .two-column-layout {
+    flex-direction: row;
+    gap: 24px;
+  }
+
+  .two-column-layout>* {
+    flex: 1;
+  }
+}
+
+/* Responsive Card Padding */
+.responsive-card {
+  padding: 12px;
+}
+
+@media (min-width: 768px) {
+  .responsive-card {
+    padding: 16px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .responsive-card {
+    padding: 24px;
+  }
+}
+
+/* Responsive Typography */
+.responsive-heading {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+@media (min-width: 768px) {
+  .responsive-heading {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .responsive-heading {
+    font-size: 1.75rem;
+  }
+}
+
+.responsive-subheading {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+@media (min-width: 768px) {
+  .responsive-subheading {
+    font-size: 1.125rem;
+  }
+}
+
+/* Hide on Mobile */
+.hide-on-mobile {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .hide-on-mobile {
+    display: block;
+  }
+}
+
+/* Show only on Mobile */
+.show-on-mobile {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .show-on-mobile {
+    display: none;
+  }
+}
+
+/* Responsive Table Container */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive table {
+  min-width: 600px;
+}
+
+/* Responsive Flex Wrap */
+.flex-responsive {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (min-width: 768px) {
+  .flex-responsive {
+    gap: 12px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .flex-responsive {
+    gap: 16px;
+  }
+}
 
 /* Skeleton Pulse Animation */
 @keyframes skeletonPulse {
-  0% { opacity: 0.55; }
-  50% { opacity: 1; }
-  100% { opacity: 0.55; }
+  0% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.55;
+  }
 }
 
 /* Works for all AntD skeleton blocks */
@@ -31,14 +231,14 @@ html, body, .ant-layout, .ant-card, .ant-layout-header, .ant-layout-sider {
   animation: skeletonPulse 1.4s ease-in-out infinite;
 }
 
-.dark .ant-skeleton-element, 
+.dark .ant-skeleton-element,
 .dark .ant-skeleton-content {
-  background-color: rgba(255,255,255,0.06) !important;
+  background-color: rgba(255, 255, 255, 0.06) !important;
 }
 
 .light .ant-skeleton-element,
 .light .ant-skeleton-content {
-  background-color: rgba(0,0,0,0.06) !important;
+  background-color: rgba(0, 0, 0, 0.06) !important;
 }
 
 :root.light {
@@ -53,4 +253,191 @@ html, body, .ant-layout, .ant-card, .ant-layout-header, .ant-layout-sider {
 
 .ant-skeleton-element {
   background-color: var(--skeleton-base) !important;
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  background: rgba(17, 25, 40, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.glass-card {
+  background: rgba(31, 41, 55, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Mobile Drawer Styling */
+.mobile-drawer .ant-drawer-body {
+  padding: 0 !important;
+}
+
+/* Custom Scrollbar for Webkit */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.5);
+}
+
+/* AntD Dark Theme Overrides for Responsive */
+@media (max-width: 767px) {
+  .ant-table {
+    font-size: 12px;
+  }
+
+  .ant-table-cell {
+    padding: 8px 6px !important;
+  }
+
+  .ant-card-head-title {
+    font-size: 14px;
+  }
+
+  .ant-card-body {
+    padding: 12px !important;
+  }
+
+  .ant-statistic-title {
+    font-size: 11px;
+  }
+
+  .ant-statistic-content {
+    font-size: 18px;
+  }
+
+  .ant-btn {
+    font-size: 13px;
+  }
+}
+
+/* Responsive Modal */
+@media (max-width: 767px) {
+  .ant-modal {
+    max-width: calc(100vw - 32px) !important;
+    margin: 16px auto !important;
+  }
+
+  .ant-modal-content {
+    padding: 16px !important;
+  }
+}
+
+/* Touch-friendly targets on mobile */
+@media (max-width: 767px) {
+
+  .ant-menu-item,
+  .ant-btn {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+/* Safe area padding for iOS */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .responsive-content {
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  }
+}
+
+/* ============================================
+   TABLE OVERFLOW FIX
+   ============================================ */
+
+/* Ensure tables don't overflow their containers */
+.ant-table-wrapper {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ant-table {
+  min-width: 100%;
+}
+
+/* Responsive table container */
+.ant-table-container {
+  overflow-x: auto;
+}
+
+/* Prevent content overflow within table cells */
+.ant-table-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+/* Allow some columns to wrap on mobile */
+@media (max-width: 767px) {
+  .ant-table-cell {
+    max-width: 120px;
+    padding: 8px 4px !important;
+  }
+
+  .ant-table-thead>tr>th {
+    font-size: 11px;
+    padding: 8px 4px !important;
+  }
+
+  .ant-table-tbody>tr>td {
+    font-size: 12px;
+  }
+
+  /* Hide less important columns on mobile */
+  .hide-on-mobile-table {
+    display: none !important;
+  }
+}
+
+/* Card-based layout parent should clip overflow */
+.ant-card-body {
+  overflow: hidden;
+}
+
+/* Section card overflow control */
+.section-card .ant-card-body {
+  overflow-x: auto;
+  padding: 12px !important;
+}
+
+@media (min-width: 768px) {
+  .section-card .ant-card-body {
+    padding: 16px !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .section-card .ant-card-body {
+    padding: 24px !important;
+  }
+}
+
+/* Layout content overflow prevention */
+.ant-layout-content {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* Fix for chart containers */
+.echarts-for-react {
+  max-width: 100%;
+  overflow: hidden;
 }

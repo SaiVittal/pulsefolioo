@@ -8,6 +8,7 @@ using Pulsefolio.Application.Interfaces.Repositories;
 using Pulsefolio.Infrastructure.Repositories;
 using Pulsefolio.Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Pulsefolio.Infrastructure.Data;
 using Pulsefolio.Application.Common.Interfaces;
 using Pulsefolio.Application.Mapping;
@@ -20,6 +21,7 @@ using Pulsefolio.Infrastructure.Services;
 using Pulsefolio.Workers;
 using StackExchange.Redis;
 using Pulsefolio.Application.Services.Auth;
+using Pulsefolio.API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,10 +61,18 @@ builder.Services.AddCors(options =>
 // ---------------------------------------------------------------------
 // DB Context
 // ---------------------------------------------------------------------
+var connectionString =
+    builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException(
+        "Connection string 'DefaultConnection' not found."
+    );
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+    options.UseNpgsql(
+        connectionString,
+        b => b.MigrationsAssembly("Pulsefolio.Infrastructure")
+    ).ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning))
+);
 
 // ---------------------------------------------------------------------
 // Controllers & Swagger
@@ -131,7 +141,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    // Hierarchical roles: Admin has all access, Analyst has User+Analyst access
+    options.AddPolicy("RequireAdmin", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("RequireAnalyst", policy => policy.RequireRole("Analyst", "Admin"));
+    options.AddPolicy("RequireUser", policy => policy.RequireRole("User", "Analyst", "Admin"));
+});
+
 
 // ---------------------------------------------------------------------
 // Redis
@@ -195,6 +212,8 @@ builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 builder.Services.AddScoped<IPriceCacheService, RedisPriceCacheService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<IWatchlistRepository, WatchlistRepository>();
+builder.Services.AddScoped<IWatchlistService, WatchlistService>();
 
 // ---------------------------------------------------------------------
 // RabbitMQ should use hostname from config
@@ -237,6 +256,7 @@ app.MapHub<PortfolioHub>("/hubs/portfolio");
 // Enable CORS
 app.UseCors("AllowFrontend");
 app.UseMiddleware<ApiExceptionMiddleware>();
+app.UseMiddleware<RateLimitingMiddleware>(); // Add Rate Limiting
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { usePortfolioSummary } from "../hooks/usePortfolioSummary";
 
 export default function SummaryCards() {
-  const { data, isLoading } = usePortfolioSummary();
+  const { data, isLoading } = usePortfolioSummary(null);
 
   const items = [
     {
@@ -12,15 +12,15 @@ export default function SummaryCards() {
     },
     {
       label: "Invested",
-      value: data?.invested,
+      value: data?.totalCost, // Correction: invested -> totalCost
     },
     {
       label: "Total P&L",
-      value: data?.totalPnL,
+      value: data?.totalPnl, // Correction: totalPnL -> totalPnl
     },
     {
       label: "Today's P&L",
-      value: data?.todaysPnL,
+      value: data?.dayPnl, // Correction: todaysPnL -> dayPnl
     },
   ];
 

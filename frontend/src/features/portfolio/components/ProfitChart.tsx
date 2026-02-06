@@ -2,7 +2,7 @@ import { Card } from "antd";
 import EChart from "../../../components/charts/EChart";
 
 export default function ProfitChart() {
-  const option = {
+  const option: any = {
     tooltip: { trigger: "axis" },
     xAxis: {
       type: "category",

@@ -19,7 +19,7 @@ namespace Pulsefolio.Infrastructure.Security
             _settings = settings.Value;
         }
 
-        public string CreateAccessToken(Guid userId, string email)
+        public string CreateAccessToken(Guid userId, string email, string role)
         {
             var key = Encoding.UTF8.GetBytes(_settings.Secret);
 
@@ -27,7 +27,9 @@ namespace Pulsefolio.Infrastructure.Security
             {
                 new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
                 new Claim("email", email.ToString()),
-                new Claim("uid", userId.ToString())
+                new Claim("uid", userId.ToString()),
+                new Claim(ClaimTypes.Role, role),
+                new Claim("role", role)
             };
 
             var creds = new SigningCredentials(
@@ -46,10 +48,10 @@ namespace Pulsefolio.Infrastructure.Security
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public (string AccessToken, DateTime ExpiresAt) CreateAccessTokenWithExpiry(Guid userId, string email)
+        public (string AccessToken, DateTime ExpiresAt) CreateAccessTokenWithExpiry(Guid userId, string email, string role)
         {
             var expires = DateTime.UtcNow.AddMinutes(_settings.AccessTokenMinutes);
-            var token = CreateAccessToken(userId, email);
+            var token = CreateAccessToken(userId, email, role);
             return (token, expires);
         }
 

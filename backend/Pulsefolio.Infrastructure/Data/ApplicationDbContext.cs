@@ -17,6 +17,8 @@ public DbSet<ValuationSnapshot> ValuationSnapshots { get; set; } = null!;
         public DbSet<Holding> Holdings { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<Watchlist> Watchlists { get; set; }
+        public DbSet<WatchlistItem> WatchlistItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

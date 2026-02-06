@@ -10,6 +10,11 @@ namespace Pulsefolio.Domain.Entities
 
         public string PasswordHash { get; set; } = string.Empty;
 
+        /// <summary>
+        /// User role for authorization. Defaults to User.
+        /// </summary>
+        public UserRole Role { get; set; } = UserRole.User;
+
         public ICollection<Portfolio> Portfolios { get; set; } = new List<Portfolio>();
 
         public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();

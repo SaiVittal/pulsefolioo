@@ -86,7 +86,7 @@ export default function SellStockModal({
             allowClear
             placeholder="Select holding to sell from"
             options={holdings.map((h) => ({
-              label: `${h.symbol} · ${h.quantity} @ ${h.buyPrice}`,
+              label: `${h.symbol} · ${h.quantity} @ ${h.averagePrice}`,
               value: h.id,
             }))}
           />

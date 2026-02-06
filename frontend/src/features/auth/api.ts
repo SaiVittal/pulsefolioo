@@ -1,32 +1,38 @@
-import { http } from "../../services/http";
+import { apiPost } from "../../services/httpMethods";
+import { UserRole } from "../../store/auth";
 
 export interface LoginRequest {
   email: string;
   password: string;
 }
 
-interface LoginResponse {
+export interface RegisterRequest {
+  email: string;
+  password: string;
+  fullName?: string;
+}
+
+export interface AuthResponse {
   accessToken: string;
   refreshToken: string;
   userId: string;
+  email: string;
+  role: UserRole;
 }
 
-export async function loginApi(body: LoginRequest): Promise<LoginResponse> {
-  // POST /auth/login -> returns { accessToken, role } and sets refresh cookie
-  return http<LoginResponse>("/auth/login", {
-    method: "POST",
-    body: JSON.stringify(body),
-  });
+export async function loginApi(body: LoginRequest): Promise<AuthResponse> {
+  return apiPost<AuthResponse>("/api/auth/login", body);
 }
 
-export async function refreshApi(): Promise<LoginResponse> {
-  // POST /auth/refresh -> reads HttpOnly cookie and returns new access token + role
-  return http<LoginResponse>("/auth/refresh", {
-    method: "POST",
-  });
+export async function registerApi(body: RegisterRequest): Promise<AuthResponse> {
+  return apiPost<AuthResponse>("/api/auth/register", body);
+}
+
+export async function refreshApi(refreshToken: string): Promise<AuthResponse> {
+  return apiPost<AuthResponse>("/api/auth/refresh", refreshToken);
 }
 
 export async function logoutApi(): Promise<void> {
-  // POST /auth/logout -> server clears refresh cookie
-  await http<void>("/auth/logout", { method: "POST" });
+  // Client-side logout - just clear local storage
 }
+

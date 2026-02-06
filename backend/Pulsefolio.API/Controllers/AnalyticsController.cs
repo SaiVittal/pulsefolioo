@@ -9,7 +9,7 @@ namespace Pulsefolio.API.Controllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize(Policy = "RequireAnalyst")]
     public class AnalyticsController : ControllerBase
     {
         private readonly IAnalyticsService _analytics;

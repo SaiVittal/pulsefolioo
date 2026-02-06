@@ -1,6 +1,6 @@
-// AppLayout.tsx
+// AppLayout.tsx - Responsive layout with mobile drawer sidebar
 
-import { Layout } from "antd";
+import { Layout, Drawer } from "antd";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
@@ -13,47 +13,80 @@ export const SIDEBAR_COLLAPSED = 72;
 
 export default function AppLayout() {
   const [collapsed, setCollapsed] = useState(false);
-  const isMobile = useBreakpoint() === "mobile";
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+  const breakpoint = useBreakpoint();
+  const isMobile = breakpoint === "mobile";
+  const isTablet = breakpoint === "tablet";
+
+  // Auto-collapse on tablet
+  const effectiveCollapsed = isTablet ? true : collapsed;
 
   // Calculate the margin for the content layout
   const marginLeft = isMobile
     ? 0
-    : collapsed
-    ? SIDEBAR_COLLAPSED
-    : SIDEBAR_WIDTH;
+    : effectiveCollapsed
+      ? SIDEBAR_COLLAPSED
+      : SIDEBAR_WIDTH;
 
   return (
-    // Set the overall layout to min-h-screen, but do NOT make it a flex container here
-    <Layout className="min-h-screen w-full"> 
-      {/* 1. Sidebar (Positioned fixed/sticky internally) */}
-      <Sidebar
-        collapsed={collapsed}
-        setCollapsed={setCollapsed}
-        width={SIDEBAR_WIDTH}
-        collapsedWidth={SIDEBAR_COLLAPSED}
-      />
+    <Layout className="min-h-screen w-full">
+      {/* Mobile Drawer Sidebar */}
+      {isMobile && (
+        <Drawer
+          placement="left"
+          open={mobileDrawerOpen}
+          onClose={() => setMobileDrawerOpen(false)}
+          width={280}
+          styles={{
+            body: { padding: 0, background: "#0b132b" },
+            header: { display: "none" }
+          }}
+          className="mobile-drawer"
+        >
+          <Sidebar
+            collapsed={false}
+            setCollapsed={() => { }}
+            width={280}
+            collapsedWidth={72}
+            isMobile={true}
+            onMobileClose={() => setMobileDrawerOpen(false)}
+          />
+        </Drawer>
+      )}
 
-      {/* 2. Content Layout (The wrapper for Topbar and Content) */}
-      <Layout
-        className="w-full flex flex-col" // Use flex-col to stack Topbar and Content
-        style={{
-          marginLeft, // This pushes the ENTIRE content area (Topbar + Outlet)
-          transition: "margin-left 0.25s ease",
-        }}
-      >
-        {/* Topbar is now inside the shifting content wrapper, so it moves with it. */}
-        <Topbar
-          collapsed={collapsed}
+      {/* Desktop/Tablet Sidebar */}
+      {!isMobile && (
+        <Sidebar
+          collapsed={effectiveCollapsed}
           setCollapsed={setCollapsed}
-          pageTitle="" // You can set a default title or manage it via context/state
+          width={SIDEBAR_WIDTH}
+          collapsedWidth={SIDEBAR_COLLAPSED}
+          isMobile={false}
+        />
+      )}
+
+      {/* Content Layout */}
+      <Layout
+        className="w-full flex flex-col transition-all duration-300"
+        style={{ marginLeft }}
+      >
+        <Topbar
+          collapsed={effectiveCollapsed}
+          setCollapsed={isTablet ? () => { } : setCollapsed}
+          pageTitle=""
           isMobile={isMobile}
+          onMobileMenuClick={() => setMobileDrawerOpen(true)}
         />
 
-        {/* 3. Main Content Area */}
+        {/* Main Content Area - Responsive padding */}
         <Layout.Content
-          className="px-6 py-4"
-          // We apply the padding-top to create space for the fixed Topbar (height: 64px)
-          style={{ paddingTop: 64 + 16 }} 
+          className="responsive-content"
+          style={{
+            paddingTop: 64 + 16,
+            paddingLeft: isMobile ? 16 : isTablet ? 20 : 24,
+            paddingRight: isMobile ? 16 : isTablet ? 20 : 24,
+            paddingBottom: isMobile ? 16 : 24,
+          }}
         >
           <Outlet />
         </Layout.Content>

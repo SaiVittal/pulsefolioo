@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { apiPost, apiGet } from "../../../services/httpMethods";
-import { useAuthStore } from "../../../store/auth";
+import { apiPost } from "../../../services/httpMethods";
+import { useAuthStore, UserRole } from "../../../store/auth";
 
 interface RegisterPayload {
   email: string;
@@ -11,12 +11,8 @@ interface RegisterResponse {
   accessToken: string;
   refreshToken: string;
   userId: string;
-}
-
-interface MeResponse {
-  userId: string;
   email: string;
-  role?: string;
+  role: UserRole;
 }
 
 export function useRegister() {
@@ -27,14 +23,13 @@ export function useRegister() {
       apiPost<RegisterResponse>("/api/Auth/register", payload),
 
     onSuccess: async (registerData) => {
-      const me = await apiGet<MeResponse>("/api/Auth/me");
-
       setAuth({
         accessToken: registerData.accessToken,
         refreshToken: registerData.refreshToken,
-        role: (me.role as any) ?? "User",
-        email: me.email,
+        role: registerData.role ?? "User",
+        email: registerData.email,
       });
     },
   });
 }
+

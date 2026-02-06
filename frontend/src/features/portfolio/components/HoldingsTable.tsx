@@ -2,7 +2,7 @@ import { Table, Tag } from "antd";
 import { useHoldings } from "../hooks/useHoldings";
 
 export default function HoldingsTable() {
-  const { data, isLoading } = useHoldings();
+  const { data, isLoading } = useHoldings(null);
 
   return (
     <Table

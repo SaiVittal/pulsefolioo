@@ -11,7 +11,7 @@ namespace Pulsefolio.API.Controllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize(Policy = "RequireUser")]
     public class HoldingController : ControllerBase
     {
         private readonly IHoldingService _holdingService;

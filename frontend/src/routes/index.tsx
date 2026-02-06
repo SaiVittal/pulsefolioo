@@ -3,6 +3,10 @@ import LoginPage from "../features/auth/pages/LoginPage";
 import UnauthorizedPage from "../features/auth/pages/UnauthorizedPage";
 import DashboardPage from "../features/portfolio/pages/DashboardPage";
 import AnalyticsPage from "../features/portfolio/pages/AnalyticsPage";
+import WatchlistPage from "../features/watchlist/pages/WatchlistPage";
+import MarketPage from "../features/portfolio/pages/MarketPage";
+import TransactionsPage from "../features/portfolio/pages/TransactionsPage";
+import SettingsPage from "../features/portfolio/pages/SettingsPage";
 
 import AppLayout from "../layouts/AppLayout";
 import ProtectedRoute from "./ProtectedRoute";
@@ -44,13 +48,45 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: "market",
+        element: (
+          <RequireRole role="User">
+            <MarketPage />
+          </RequireRole>
+        ),
+      },
+      {
         path: "analytics",
         element: (
           <RequireRole role="Analyst">
             <AnalyticsPage />
           </RequireRole>
         ),
-      }
+      },
+      {
+        path: "watchlist",
+        element: (
+          <RequireRole role="User">
+            <WatchlistPage />
+          </RequireRole>
+        ),
+      },
+      {
+        path: "transactions",
+        element: (
+          <RequireRole role="User">
+            <TransactionsPage />
+          </RequireRole>
+        ),
+      },
+      {
+        path: "settings",
+        element: (
+          <RequireRole role="User">
+            <SettingsPage />
+          </RequireRole>
+        ),
+      },
     ]
   }
 ]);

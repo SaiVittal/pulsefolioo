@@ -9,10 +9,17 @@ services:
       POSTGRES_USER: portfoliouser
       POSTGRES_PASSWORD: SaiVittalPortfolio@20
       POSTGRES_DB: pulsefolio_db
-    ports:
-      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U portfoliouser -d pulsefolio_db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - pulsefolio-network
 
   redis:
     image: redis:7
@@ -20,6 +27,8 @@ services:
     restart: always
     ports:
       - "6379:6379"
+    networks:
+      - pulsefolio-network
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -31,6 +40,8 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: saiadmin123
+    networks:
+      - pulsefolio-network
 
   api:
     build:
@@ -39,11 +50,14 @@ services:
     container_name: pulsefolio_api
     restart: always
     depends_on:
-      - postgres
-      - redis
-      - rabbitmq
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_ENVIRONMENT: Production
 
       # Database
       ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=pulsefolio_db;Username=portfoliouser;Password=SaiVittalPortfolio@20"
@@ -57,9 +71,43 @@ services:
       RabbitMQ__Username: "admin"
       RabbitMQ__Password: "saiadmin123"
 
-      # CORS OVERRIDE (THE CORRECT LOCATION)
+      # AlphaVantage API
+      AlphaVantage__ApiKey: "CUQXZU083M7L7170"
+      AlphaVantage__BaseUrl: "https://www.alphavantage.co"
+
+      # JWT Settings (use single quotes to avoid shell expansion issues)
+      JwtSettings__Secret: 'N7_u@3Fj$kL1zR8wQ9tYuVp_sxG4_bM2fT6_hA0PnZcD_rW5eJqBvH7mK3yT_LxC8_uP4sR2vF9_qD1pB6gX0wM5nY8hK7S_j'
+      JwtSettings__AccessTokenMinutes: "60"
+      JwtSettings__RefreshTokenDays: "30"
+      JwtSettings__Issuer: "pulsefolio"
+      JwtSettings__Audience: "pulsefolio_users"
+
+      # CORS (allow frontend container, localhost, and public tunnel)
       Cors__AllowedOrigins__0: "http://localhost:5173"
-      Cors__AllowedOrigins__1: "https://your-cloudfront-domain"
+      Cors__AllowedOrigins__1: "http://localhost:3000"
+      Cors__AllowedOrigins__2: "http://frontend:80"
+      Cors__AllowedOrigins__3: "https://polite-corners-try.loca.lt"
 
     ports:
       - "5188:8080"
+    networks:
+      - pulsefolio-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: "https://curvy-goats-enter.loca.lt"
+    container_name: pulsefolio_frontend
+    restart: always
+    depends_on:
+      - api
+    ports:
+      - "3000:80"
+    networks:
+      - pulsefolio-network
+
+networks:
+  pulsefolio-network:
+    driver: bridge

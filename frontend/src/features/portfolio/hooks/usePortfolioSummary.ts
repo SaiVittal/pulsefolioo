@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchTransactionsByPortfolio } from "../api/transactionApi";
+import { getPortfolioSummary } from "../services/portfolioApi";
 
-export function usePortfolioTransactions(portfolioId: string | null) {
+export function usePortfolioSummary(portfolioId: string | null) {
   return useQuery({
-    queryKey: ["transactions", portfolioId],
-    queryFn: () => fetchTransactionsByPortfolio(portfolioId!),
+    queryKey: ["portfolio-summary", portfolioId],
+    queryFn: () => getPortfolioSummary(portfolioId!),
     enabled: !!portfolioId,
   });
 }
