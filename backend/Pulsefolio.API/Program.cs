@@ -68,30 +68,39 @@ string GetConnectionString(IConfiguration configuration)
     var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
     if (string.IsNullOrEmpty(databaseUrl))
     {
+        Console.WriteLine("⚠️ DATABASE_URL not found. Using local DefaultConnection.");
         return configuration.GetConnectionString("DefaultConnection") 
             ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
     }
 
     try 
     {
+        Console.WriteLine($"✅ Found DATABASE_URL: {databaseUrl.Split('@')[1]} (credentials hidden)"); // Log non-sensitive part
+        
         var databaseUri = new Uri(databaseUrl);
         var userInfo = databaseUri.UserInfo.Split(':');
         
+        // Handle password with special chars (if any)
+        var username = userInfo[0];
+        var password = userInfo.Length > 1 ? string.Join(":", userInfo.Skip(1)) : "";
+
         return $"Host={databaseUri.Host};" +
                $"Port={databaseUri.Port};" +
                $"Database={databaseUri.AbsolutePath.TrimStart('/')};" +
-               $"Username={userInfo[0]};" +
-               $"Password={userInfo[1]};" +
+               $"Username={username};" +
+               $"Password={password};" +
                $"SslMode=Require;Trust Server Certificate=true";
     }
-    catch
+    catch (Exception ex)
     {
-        // Fallback or if URL format is different (e.g. regular connection string)
+        Console.WriteLine($"❌ Error parsing DATABASE_URL: {ex.Message}");
+        Console.WriteLine($"Fallback: Returning raw DATABASE_URL");
         return databaseUrl;
     }
 }
 
-var connectionString = GetConnectionString(builder.Configuration);
+var connectionString = GetConnectionString(builder.Configuration);  
+Console.WriteLine($"ℹ️ Final Connection String (Hidden Pwd): {System.Text.RegularExpressions.Regex.Replace(connectionString, "Password=.*?;", "Password=***;")}");
 
 // Redis Configuration Helper
 string GetRedisConnectionString(IConfiguration configuration)

@@ -42,6 +42,7 @@ namespace Pulsefolio.Workers
 
             if (!string.IsNullOrEmpty(rabbitUrl))
             {
+                _logger.LogInformation("✅ Found RABBITMQ_URL: {Url} (redacted)", rabbitUrl.Split('@')[1]);
                 factory = new ConnectionFactory
                 {
                     Uri = new Uri(rabbitUrl),
@@ -50,6 +51,7 @@ namespace Pulsefolio.Workers
             }
             else
             {
+                _logger.LogWarning("⚠️ RABBITMQ_URL not found. Using appsettings.json: RabbitMQ:Host={Host}", cfg["RabbitMQ:Host"]);
                 factory = new ConnectionFactory
                 {
                     HostName = cfg["RabbitMQ:Host"] ?? "localhost",
